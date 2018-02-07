@@ -1,3 +1,6 @@
+import sys
+interval = sys.argv[1]
+merge_count = sys.argv[2]
 def parse_interval(interval):
     colon_split = interval.split(":")
     chromosome = colon_split[0]
@@ -9,10 +12,10 @@ def add_interval(chr, start, end):
     lines_to_write.append(chr + ":" + str(start) + "-" + str(end))
     return chr, start, end
 count = 0
-chain_count = ${merge_count}
+chain_count = merge_count
 l_chr, l_start, l_end = "", 0, 0
 lines_to_write = []
-with open("${intervals}") as f:
+with open(intervals) as f:
     with open("out.intervals", "w") as f1:
         for line in f.readlines():
             # initialization
