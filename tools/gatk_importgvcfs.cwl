@@ -3,37 +3,40 @@ class: CommandLineTool
 id: gatk_importgvcfs
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.1'
+    dockerPull: 'broadinstitute/gatk:4.beta.5'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     ramMin: 4000
     coresMin: 5
-baseCommand: [set, -e]
+baseCommand: []
 arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-
-      rm -rf $(inputs.workspace_dir_name)
-
-      /gatk-launch --javaOptions "-Xmx4g -Xms4g"
+      /gatk/gatk-launch --javaOptions "-Xmx4g -Xms4g"
       GenomicsDBImport
       --genomicsDBWorkspace $(inputs.workspace_dir_name)
-      --batchSize $(inputs.batch_size)
+      --batchSize 50
       -L $(inputs.interval.path)
-      --sampleNameMap $(inputs.sample_name_map.path)
       --readerThreads 5
-      -ip 5 && tar -cf $(inputs.workspace_dir_name).tar $(inputs.workspace_dir_name)
+      -ip 5
+  - position: 2
+    shellQuote: false
+    valueFrom: >-
+      && tar -cf $(inputs.workspace_dir_name).tar $(inputs.workspace_dir_name)
 inputs:
-  workspace_dir_name:
-    type: string
-  batch_size:
-    type: int
-  interval:
-    type: File
-  sample_name_map:
-    type: File
+  workspace_dir_name: string
+  interval: File
+  gvcf:
+    type:
+      type: array
+      items: File
+      inputBinding:
+        prefix: -V
+    secondaryFiles: [.tbi]
+    inputBinding:
+      position: 1
 outputs:
   output:
     type: File

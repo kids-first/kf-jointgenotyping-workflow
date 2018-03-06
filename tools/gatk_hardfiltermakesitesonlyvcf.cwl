@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_hardfiltermakesitesonlyvcf
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.1-2.8.3'
+    dockerPull: 'kfdrc/gatk4-picard:4.beta.1-2.8.3'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,31 +14,23 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      set -e
-
       /gatk-launch --javaOptions "-Xmx3g -Xms3g"
       VariantFiltration
-      --filterExpression "ExcessHet > $(inputs.excess_het_threshold)"
+      --filterExpression "ExcessHet > 54.69"
       --filterName ExcessHet
       -O $(inputs.variant_filtered_vcf_filename)
       -V $(inputs.vcf.path)
 
-      WORKSPACE=`basename $(inputs.workspace_tar.path) .tar)`
-
-      java -Xmx3g -Xms3g -jar /usr/gitc/picard.jar
+      java -Xmx3g -Xms3g -jar /picard.jar
       MakeSitesOnlyVcf
       INPUT=$(inputs.variant_filtered_vcf_filename)
       OUTPUT=$(inputs.sites_only_vcf_filename)
 inputs:
-  excess_het_threshold:
-    type: float
-  variant_filtered_vcf_filename:
-    type: string
+  variant_filtered_vcf_filename: string
+  sites_only_vcf_filename: string
   vcf:
     type: File
     secondaryFiles: [.tbi]
-  sites_only_vcf_filename:
-    type: string
 outputs:
   variant_filtered_vcf:
     type: File

@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_genotypegvcfs
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.1'
+    dockerPull: 'broadinstitute/gatk:4.beta.5'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,13 +14,9 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      set -e
-
       tar -xf $(inputs.workspace_tar.path)
 
-      WORKSPACE=`basename $(inputs.workspace_tar.path) .tar)`
-
-      /gatk-launch --javaOptions "-Xmx5g -Xms5g"
+      /gatk/gatk-launch --javaOptions "-Xmx5g -Xms5g"
       GenotypeGVCFs
       -R $(inputs.ref_fasta.path)
       -O $(inputs.output_vcf_filename)
@@ -28,20 +24,18 @@ arguments:
       -G StandardAnnotation
       --onlyOutputCallsStartingInIntervals
       -newQual
-      -V gendb://$WORKSPACE
+      -V gendb://$(inputs.workspace_tar.nameroot)
       -L $(inputs.interval.path)
 inputs:
-  workspace_tar:
-    type: File
+  workspace_tar: File
   ref_fasta:
     type: File
-    secondaryFiles: [.idx, ^.dict]
+    secondaryFiles: [^.dict, .fai]
   dbsnp_vcf:
     type: File
-  interval:
-    type: File
-  output_vcf_filename:
-    type: string
+    secondaryFiles: [.idx]
+  interval: File
+  output_vcf_filename: string
 outputs:
   output:
     type: File
