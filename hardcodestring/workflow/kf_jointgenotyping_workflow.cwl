@@ -3,8 +3,6 @@ class: Workflow
 id: scatter_pre_vqsr
 requirements:
   - class: ScatterFeatureRequirement
-  - class: StepInputExpressionRequirement
-  - class: InlineJavascriptRequirement
   - class: SubworkflowFeatureRequirement
 
 inputs:
@@ -96,7 +94,7 @@ steps:
     scatterMethod: dotproduct
     out: [recalibrated_vcf]
   gatk_finalgathervcf:
-    run: ../tools/gatk_gathervcfs.cwl
+    run: ../tools/gatk_gathervcfscloud.cwl
     in:
       input_vcfs: gatk_applyrecalibration/recalibrated_vcf
       output_vcf_basename: output_vcf_basename
