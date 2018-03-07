@@ -14,14 +14,15 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /usr/gitc/gatk-launch --javaOptions "-Xmx3g -Xms3g"
+      /gatk-launch --javaOptions "-Xmx3g -Xms3g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O scatter.snps.recal
       -tranchesFile scatter.snps.tranches
       -allPoly
       -mode SNP
-      --input_model $(inputs.model_report)
+      --input_model $(inputs.model_report.path)
+      -scatterTranches
       --maxGaussians 6
       -resource hapmap,known=false,training=true,truth=true,prior=15:$(inputs.hapmap_resource_vcf.path)
       -resource omni,known=false,training=true,truth=true,prior=12:$(inputs.omni_resource_vcf.path)
@@ -62,7 +63,7 @@ inputs:
     secondaryFiles: [.tbi]
   dbsnp_resource_vcf:
     type: File
-    secondaryFiles: [.tbi]
+    secondaryFiles: [.idx]
 outputs:
   recalibration:
     type: File

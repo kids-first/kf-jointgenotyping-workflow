@@ -70,4 +70,18 @@ outputs:
   out_intervals:
     type: File[]
     outputBinding:
-      glob: '*.intervals'
+      glob: 'out-*.intervals'
+      outputEval: ${
+          var i;
+          var name = [];
+          var dict = {};
+          for (i = 0; i < self.length; ++i) {
+            name[i] = self[i].nameroot;
+            dict[self[i].nameroot] = self[i];
+          };
+          name = name.sort();
+          for (i = 0; i < name.length; ++i) {
+            self[i] = dict[name[i]];
+          };
+          return self;
+        }
