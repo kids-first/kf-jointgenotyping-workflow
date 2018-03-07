@@ -1,0 +1,4 @@
+recalibration_tranche_values: ["100.0", "99.95", "99.9", "99.8", "99.6", "99.5", "99.4", "99.3", "99.0", "98.0", "97.0", "90.0"]
+recalibration_annotation_values: ["QD", "MQRankSum", "ReadPosRankSum", "FS", "MQ", "SOR", "DP"]
+snp_filter_level: 99.7
+downsampleFactor: 10
