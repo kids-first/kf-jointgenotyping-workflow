@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_indelsvariantrecalibrator
 requirements:
   - class: DockerRequirement
-    dockerPull: 'broadinstitute/gatk:4.beta.5'
+    dockerPull: 'kfdrc/gatk:4.beta.5'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,7 +14,7 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk/gatk-launch --javaOptions "-Xmx24g -Xms24g"
+      /gatk-launch --javaOptions "-Xmx24g -Xms24g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O indels.recal
@@ -62,9 +62,9 @@ outputs:
   recalibration:
     type: File
     outputBinding:
-      glob: $(inputs.recalibration_filename)
+      glob: indels.recal
     secondaryFiles: [.tbi]
   tranches:
     type: File
     outputBinding:
-      glob: $(inputs.tranches_filename)
+      glob: indels.tranches

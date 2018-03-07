@@ -19,14 +19,15 @@ arguments:
       def add_interval(chr, start, end, i):
           fn = "out-{:0>5d}.intervals".format(i)
           lw = chr + ":" + str(start) + "-" + str(end) + "\\n"
-          with open(fn, "w") as fo:
-              fo.writelines(lw)
+          if i<= 10:
+              with open(fn, "w") as fo:
+                  fo.writelines(lw)
           return chr, start, end
       def main():
           interval = "$(inputs.interval.path)"
           num_of_original_intervals = sum(1 for line in open(interval))
           num_gvcfs = $(inputs.input_vcfs.length)
-          merge_count = int(num_of_original_intervals/num_gvcfs/2.5)
+          merge_count = int(num_of_original_intervals/num_gvcfs/250)
           count = 0
           i = 1
           chain_count = merge_count
@@ -69,4 +70,18 @@ outputs:
   out_intervals:
     type: File[]
     outputBinding:
-      glob: '*.intervals'
+      glob: 'out-*.intervals'
+      outputEval: ${
+          var i;
+          var name = [];
+          var dict = {};
+          for (i = 0; i < self.length; ++i) {
+            name[i] = self[i].nameroot;
+            dict[self[i].nameroot] = self[i];
+          };
+          name = name.sort();
+          for (i = 0; i < name.length; ++i) {
+            self[i] = dict[name[i]];
+          };
+          return self;
+        }

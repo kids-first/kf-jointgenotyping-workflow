@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_gathervcfscloud
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.1.2'
+    dockerPull: 'kfdrc/gatk:4.beta.6-tabix-m'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,11 +14,15 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk --javaOptions "-Xmx6g -Xms6g"
+      /gatk/gatk-launch --javaOptions "-Xmx6g -Xms6g"
       GatherVcfsCloud
       --ignoreSafetyChecks
       --gatherType BLOCK
-      --output $(inputs.output_vcf_name)
+      --output $(inputs.output_vcf_basename + ".vcf.gz")
+  - position: 2
+    shellQuote: false
+    valueFrom: >-
+      && /tabix/tabix $(inputs.output_vcf_basename + ".vcf.gz")
 inputs:
   input_vcfs:
     type:
@@ -28,9 +32,10 @@ inputs:
         prefix: -I
     inputBinding:
       position: 1
-  output_vcf_name: string
+  output_vcf_basename: string
 outputs:
   output:
     type: File
     outputBinding:
-      glob: $(inputs.output_vcf_name)
+      glob: $(inputs.output_vcf_basename + ".vcf.gz")
+    secondaryFiles: [.tbi]

@@ -18,7 +18,7 @@ arguments:
       VariantFiltration
       --filterExpression "ExcessHet > 54.69"
       --filterName ExcessHet
-      -O $(inputs.variant_filtered_vcf_filename)
+      -O variant_filtered.vcf.gz
       -V $(inputs.vcf.path)
 
       java -Xmx3g -Xms3g -jar /picard.jar
@@ -33,10 +33,10 @@ outputs:
   variant_filtered_vcf:
     type: File
     outputBinding:
-      glob: $(inputs.variant_filtered_vcf_filename)
+      glob: variant_filtered.vcf.gz
     secondaryFiles: [.tbi]
   sites_only_vcf:
     type: File
     outputBinding:
-      glob: $(inputs.sites_only_vcf_filename)
+      glob: sites_only.variant_filtered.vcf.gz
     secondaryFiles: [.tbi]

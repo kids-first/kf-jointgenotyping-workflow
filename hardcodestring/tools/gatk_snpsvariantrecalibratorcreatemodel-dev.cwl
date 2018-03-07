@@ -62,7 +62,7 @@ inputs:
     secondaryFiles: [.tbi]
   dbsnp_resource_vcf:
     type: File
-    secondaryFiles: [.tbi]
+    secondaryFiles: [.idx]
 outputs:
   model_report:
     type: File
