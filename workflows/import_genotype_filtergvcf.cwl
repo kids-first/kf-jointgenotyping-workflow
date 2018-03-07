@@ -18,6 +18,9 @@ outputs:
   variant_filtered_vcf:
     type: File
     outputSource: gatk_hardfiltermakesitesonlyvcf/variant_filtered_vcf
+  sites_only_vcf:
+    type: File
+    outputSource: gatk_hardfiltermakesitesonlyvcf/sites_only_vcf
 
 steps:
   gatk_importgvcfs:
