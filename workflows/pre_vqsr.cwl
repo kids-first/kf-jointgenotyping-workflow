@@ -21,6 +21,12 @@ outputs:
   variant_filtered_vcf:
     type: File[]
     outputSource: import_genotype_filtergvcf/variant_filtered_vcf
+  sites_only_vcf:
+    type: File[]
+    outputSource: import_genotype_filtergvcf/sites_only_vcf
+  gathervcfs:
+    type: File
+    outputSource: gatk_gathervcfs/output
 
 steps:
   dynamicallycombineintervals:
@@ -42,4 +48,11 @@ steps:
       variant_filtered_vcf_filename: variant_filtered_vcf_filename
     scatter: [interval]
     out:
-      [variant_filtered_vcf]
+      [variant_filtered_vcf, sites_only_vcf]
+  gatk_gathervcfs:
+    run: ../tools/gatk_gathervcfs.cwl
+    in:
+      input_vcfs: import_genotype_filtergvcf/sites_only_vcf
+      output_vcf_name: output_vcf_filename
+    out: [output]
+
