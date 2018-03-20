@@ -8,14 +8,14 @@ requirements:
 inputs:
   input_vcfs:
     type: File[]
-    inputBinding: [.tbi]
+    secondaryFiles: [.tbi]
   interval: File
   dbsnp_vcf:
     type: File[]
-    inputBinding: [.idx]
+    secondaryFiles: [.idx]
   ref_fasta:
     type: File[]
-    inputBinding: [^.dict, .fai]
+    secondaryFiles: [^.dict, .fai]
 outputs:
   variant_filtered_vcf:
     type: File

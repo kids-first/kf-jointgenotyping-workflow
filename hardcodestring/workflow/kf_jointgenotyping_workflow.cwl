@@ -34,8 +34,8 @@ steps:
       input_vcfs: input_vcfs
       interval: unpadded_intervals_file
     out: [out_intervals]
-  import_genotype_filtergvcf:
-    run: ../workflow/import_genotype_filtergvcf.cwl
+  gatk_import_genotype_filtergvcf_merge:
+    run: ../tools/gatk_import_genotype_filtergvcf_merge.cwl
     in:
       input_vcfs: input_vcfs
       interval: dynamicallycombineintervals/out_intervals
@@ -47,7 +47,7 @@ steps:
   gatk_gathervcfs:
     run: ../tools/gatk_gathervcfs.cwl
     in:
-      input_vcfs: import_genotype_filtergvcf/sites_only_vcf
+      input_vcfs: gatk_import_genotype_filtergvcf_merge/sites_only_vcf
     out: [output]
   gatk_snpsvariantrecalibratorcreatemodel:
     run: ../tools/gatk_snpsvariantrecalibratorcreatemodel.cwl
@@ -69,7 +69,7 @@ steps:
   gatk_snpsvariantrecalibratorscattered:
     run: ../tools/gatk_snpsvariantrecalibratorscattered.cwl
     in:
-      sites_only_variant_filtered_vcf: import_genotype_filtergvcf/sites_only_vcf
+      sites_only_variant_filtered_vcf: gatk_import_genotype_filtergvcf_merge/sites_only_vcf
       model_report: gatk_snpsvariantrecalibratorcreatemodel/model_report
       hapmap_resource_vcf: hapmap_resource_vcf
       omni_resource_vcf: omni_resource_vcf
@@ -87,7 +87,7 @@ steps:
     in:
       indels_recalibration: gatk_indelsvariantrecalibrator/recalibration
       indels_tranches: gatk_indelsvariantrecalibrator/tranches
-      input_vcf: import_genotype_filtergvcf/variant_filtered_vcf
+      input_vcf: gatk_import_genotype_filtergvcf_merge/variant_filtered_vcf
       snps_recalibration: gatk_snpsvariantrecalibratorscattered/recalibration
       snps_tranches: gatk_gathertranches/output
     scatter: [input_vcf, snps_recalibration]
