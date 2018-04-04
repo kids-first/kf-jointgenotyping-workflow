@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_applyrecalibration
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.5'
+    dockerPull: 'kfdrc/gatk:4.0.1.2'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,24 +14,24 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk-launch --javaOptions "-Xmx5g -Xms5g"
+      /gatk --java-options "-Xmx5g -Xms5g"
       ApplyVQSR
       -O tmp.indel.recalibrated.vcf
       -V $(inputs.input_vcf.path)
-      --recalFile $(inputs.indels_recalibration.path)
-      -tranchesFile $(inputs.indels_tranches.path)
-      -ts_filter_level 99.7
-      --createOutputVariantIndex true
+      --recal-file $(inputs.indels_recalibration.path)
+      --tranches-file $(inputs.indels_tranches.path)
+      -ts-filter-level 99.7
+      --create-output-bam-index true
       -mode INDEL
 
-      /gatk-launch --javaOptions "-Xmx5g -Xms5g"
+      /gatk --java-options "-Xmx5g -Xms5g"
       ApplyVQSR
       -O scatter.filtered.vcf.gz
       -V tmp.indel.recalibrated.vcf
-      --recalFile $(inputs.snps_recalibration.path)
-      -tranchesFile $(inputs.snps_tranches.path)
-      -ts_filter_level 99.7
-      --createOutputVariantIndex true
+      --recal-file $(inputs.snps_recalibration.path)
+      --tranches-file $(inputs.snps_tranches.path)
+      -ts-filter-level 99.7
+      --create-output-bam-index true
       -mode SNP
 inputs:
   input_vcf:
