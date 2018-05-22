@@ -16,7 +16,7 @@ arguments:
     valueFrom: >-
       /gatk/gatk-launch --javaOptions "-Xmx4g -Xms4g"
       GenomicsDBImport
-      --genomicsDBWorkspace $(inputs.workspace_dir_name)
+      --genomicsDBWorkspace genomicsdb
       --batchSize 50
       -L $(inputs.interval.path)
       --readerThreads 5
@@ -24,9 +24,8 @@ arguments:
   - position: 2
     shellQuote: false
     valueFrom: >-
-      && tar -cf $(inputs.workspace_dir_name).tar $(inputs.workspace_dir_name)
+      && tar -cf genomicsdb.tar genomicsdb
 inputs:
-  workspace_dir_name: string
   interval: File
   gvcf:
     type:
@@ -41,4 +40,4 @@ outputs:
   output:
     type: File
     outputBinding:
-      glob: $(inputs.workspace_dir_name).tar
+      glob: genomicsdb.tar

@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_indelsvariantrecalibrator
 requirements:
   - class: DockerRequirement
-    dockerPull: 'broadinstitute/gatk:4.beta.5'
+    dockerPull: 'kfdrc/gatk:4.beta.5'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,24 +14,41 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk/gatk-launch --javaOptions "-Xmx24g -Xms24g"
+      /gatk-launch --javaOptions "-Xmx24g -Xms24g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
-      -O $(inputs.recalibration_filename)
-      -tranchesFile $(inputs.tranches_filename)
+      -O indels.recal
+      -tranchesFile indels.tranches
       -allPoly
       -mode INDEL
       --maxGaussians 4
       -resource mills,known=false,training=true,truth=true,prior=12:$(inputs.mills_resource_vcf.path)
       -resource axiomPoly,known=false,training=true,truth=false,prior=10:$(inputs.axiomPoly_resource_vcf.path)
       -resource dbsnp,known=true,training=false,truth=false,prior=2:$(inputs.dbsnp_resource_vcf.path)
-
+      -tranche 100.0
+      -tranche 99.95
+      -tranche 99.9
+      -tranche 99.5
+      -tranche 99.0
+      -tranche 97.0
+      -tranche 96.0
+      -tranche 95.0
+      -tranche 94.0
+      -tranche 93.5
+      -tranche 93.0
+      -tranche 92.0
+      -tranche 91.0
+      -tranche 90.0
+      -an FS
+      -an ReadPosRankSum
+      -an MQRankSum
+      -an QD
+      -an SOR
+      -an DP
 inputs:
   sites_only_variant_filtered_vcf:
     type: File
     secondaryFiles: [.tbi]
-  recalibration_filename: string
-  tranches_filename: string
   mills_resource_vcf:
     type: File
     secondaryFiles: [.tbi]
@@ -41,29 +58,13 @@ inputs:
   dbsnp_resource_vcf:
     type: File
     secondaryFiles: [.idx]
-  recalibration_tranche_values:
-    type:
-      type: array
-      items: string
-      inputBinding:
-        prefix: -tranche
-    inputBinding:
-      position: 1
-  recalibration_annotation_values:
-    type:
-      type: array
-      items: string
-      inputBinding:
-        prefix: -an
-    inputBinding:
-      position: 2
 outputs:
   recalibration:
     type: File
     outputBinding:
-      glob: $(inputs.recalibration_filename)
+      glob: indels.recal
     secondaryFiles: [.tbi]
   tranches:
     type: File
     outputBinding:
-      glob: $(inputs.tranches_filename)
+      glob: indels.tranches
