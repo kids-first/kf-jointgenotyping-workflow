@@ -19,7 +19,7 @@ arguments:
       /gatk/gatk-launch --javaOptions "-Xmx5g -Xms5g"
       GenotypeGVCFs
       -R $(inputs.ref_fasta.path)
-      -O $(inputs.output_vcf_filename)
+      -O output.vcf.gz
       -D $(inputs.dbsnp_vcf.path)
       -G StandardAnnotation
       --onlyOutputCallsStartingInIntervals
@@ -35,10 +35,9 @@ inputs:
     type: File
     secondaryFiles: [.idx]
   interval: File
-  output_vcf_filename: string
 outputs:
   output:
     type: File
     outputBinding:
-      glob: $(inputs.output_vcf_filename)
+      glob: output.vcf.gz
     secondaryFiles: [.tbi]
