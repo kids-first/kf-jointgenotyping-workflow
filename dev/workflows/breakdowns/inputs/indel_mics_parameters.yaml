@@ -1,0 +1,2 @@
+recalibration_tranche_values: ["100.0", "99.95", "99.9", "99.5", "99.0", "97.0", "96.0", "95.0", "94.0", "93.5", "93.0", "92.0", "91.0", "90.0"]
+recalibration_annotation_values: ["FS", "ReadPosRankSum", "MQRankSum", "QD", "SOR", "DP"]
