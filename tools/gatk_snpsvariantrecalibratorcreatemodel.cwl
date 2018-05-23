@@ -14,7 +14,7 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk-launch --javaOptions "-Xmx100g -Xms100g"
+      /gatk-launch --javaOptions "-Xmx100g -Xms50g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O snps.recal

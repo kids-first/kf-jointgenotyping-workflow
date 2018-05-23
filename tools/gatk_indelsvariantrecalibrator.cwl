@@ -63,7 +63,7 @@ outputs:
     type: File
     outputBinding:
       glob: indels.recal
-    secondaryFiles: [.tbi]
+    secondaryFiles: [.idx]
   tranches:
     type: File
     outputBinding:
