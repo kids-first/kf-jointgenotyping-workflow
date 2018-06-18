@@ -112,4 +112,4 @@ $namespaces:
   sbg: https://sevenbridges.com
 hints:
   - class: 'sbg:AWSInstanceType'
-    value: r4.4 xlarge;ebs-gp2;500
+    value: r4.4xlarge;ebs-gp2;500
