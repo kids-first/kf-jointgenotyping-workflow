@@ -49,7 +49,7 @@ steps:
       input_vcfs: gatk_import_genotype_filtergvcf_merge/sites_only_vcf
     out: [output]
   gatk_snpsvariantrecalibratorcreatemodel:
-    run: ../tools/gatk_snpsvariantrecalibratorcreatemodel.cwl
+    run: ../tools/gatk_snpsvariantrecalibratorcreatemodel_gatk4.0.cwl
     in: 
       dbsnp_resource_vcf: dbsnp_vcf
       hapmap_resource_vcf: hapmap_resource_vcf
@@ -112,6 +112,4 @@ $namespaces:
   sbg: https://sevenbridges.com
 hints:
   - class: 'sbg:AWSInstanceType'
-    value: c4.8xlarge;ebs-gp2;350
-  - class: 'sbg:maxNumberOfParallelInstances'
-    value: 4
+    value: r4.4 xlarge;ebs-gp2;500
