@@ -49,7 +49,7 @@ steps:
       input_vcfs: gatk_import_genotype_filtergvcf_merge/sites_only_vcf
     out: [output]
   gatk_snpsvariantrecalibratorcreatemodel:
-    run: ../tools/gatk_snpsvariantrecalibratorcreatemodel_gatk4.0.cwl
+    run: ../tools/gatk_snpsvariantrecalibratorcreatemodel.cwl
     in: 
       dbsnp_resource_vcf: dbsnp_vcf
       hapmap_resource_vcf: hapmap_resource_vcf
