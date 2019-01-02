@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_importgvcfs
 requirements:
   - class: DockerRequirement
-    dockerPull: 'broadinstitute/gatk:4.beta.5'
+    dockerPull: 'kfdrc/gatk:4.0.5.2'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,7 +14,7 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk/gatk-launch --javaOptions "-Xmx4g -Xms4g"
+      /gatk --javaOptions "-Xmx4g -Xms4g"
       GenomicsDBImport
       --genomicsDBWorkspace genomicsdb
       --batchSize 50

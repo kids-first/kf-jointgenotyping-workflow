@@ -1,58 +1,33 @@
 cwlVersion: v1.0
 class: Workflow
 id: kfdrc_jointgenotyping_workflow
-label: 'kfdrc-jointgenotyping'
-doc: 'Cohort sample variant calling. Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow: <a href="https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145"> Germline short variant discovery (SNPs + Indels)</a>, to create joint trios (typically mother-father-child) variant calls.'
+label: Kids First DRC Joint Genotyping Workflow
+doc: 'Kids First Data Resource Center Joint Genotyping Workflow (cram-to-deNovoGVCF). Cohort sample variant calling and genotype refinement. Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow: <a href="https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145"> Germline short variant discovery (SNPs + Indels)</a>, to create joint trios (typically mother-father-child) variant calls. Peddy is run to raise any potential issues in family relation definitions and sex assignment.'
 requirements:
   - class: ScatterFeatureRequirement
 
 inputs:
-  input_vcfs:
-    type: File[]
-    doc: 'Input array of individual sample gVCF files'
-  unpadded_intervals_file:
-    type: File
-    doc: 'hg38.even.handcurated.20k.intervals'
-  dbsnp_vcf:
-    type: File
-    doc: 'Homo_sapiens_assembly38.dbsnp138.vcf'
-  output_vcf_basename:
-    type: string
-    doc: 'Output name for vcf without extension'
-  ref_fasta:
-    type: File
-    doc: 'Homo_sapiens_assembly38.fasta'
-  hapmap_resource_vcf:
-    type: File
-    doc: 'Hapmap genotype SNP input vcf'
-  omni_resource_vcf:
-    type: File
-    doc: '1000G_omni2.5.hg38.vcf.gz'
-  one_thousand_genomes_resource_vcf:
-    type: File
-    doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz'
-  axiomPoly_resource_vcf:
-    type: File
-    doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz'
-  mills_resource_vcf:
-    type: File
-    doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz'
-  reference_dict:
-    type: File
-    doc: 'Homo_sapiens_assembly38.dict'
-  wgs_evaluation_interval_list:
-    type: File
-    doc: 'wgs_evaluation_regions.hg38.interval_list'
+  input_vcfs: {type: 'File[]', doc: 'Input array of individual sample gVCF files'}
+  unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals'}
+  dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf'}
+  output_vcf_basename: {type: string, doc: 'Output name for vcf without extension'}
+  ref_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta'}
+  hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf'}
+  omni_resource_vcf: {type: File, doc: '1000G_omni2.5.hg38.vcf.gz'}
+  one_thousand_genomes_resource_vcf: {type: File, doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz'}
+  axiomPoly_resource_vcf: {type: File, doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz'}
+  mills_resource_vcf: {type: File, doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz'}
+  reference_dict: {type: File, doc: 'Homo_sapiens_assembly38.dict'}
+  wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list'}
+  ped: File
+  output_basename: string
 
 outputs:
-  finalgathervcf:
-    type: File
-    doc: 'Joint call result vcf file'
-    outputSource: gatk_finalgathervcf/output
-  collectvariantcallingmetrics:
-    type: File[]
-    doc: 'Variant calling summary and detailed metrics files'
-    outputSource: picard_collectvariantcallingmetrics/output
+  finalgathervcf: {type: File, doc: 'Joint call result vcf file', outputSource: gatk_gatherfinalvcf/output}
+  collectvariantcallingmetrics: {type: 'File[]', doc: 'Variant calling summary and detailed metrics files', outputSource: picard_collectvariantcallingmetrics/output}
+  peddy_html: {type: 'File[]', doc: 'html summary of peddy results', outputSource: peddy/output_html}
+  peddy_csv: {type: 'File[]', doc: 'csv details of peddy results', outputSource: peddy/output_csv}
+  peddy_ped: {type: 'File[]', doc: 'ped format summary of peddy results', outputSource: peddy/output_peddy}
 
 steps:
   dynamicallycombineintervals:
@@ -136,20 +111,29 @@ steps:
     scatter: [input_vcf, snps_recalibration]
     scatterMethod: dotproduct
     out: [recalibrated_vcf]
-  gatk_finalgathervcf:
-    run: ../tools/gatk_gathervcfscloud.cwl
+  gatk_gatherfinalvcf:
+    run: ../tools/gatk_gatherfinalvcf.cwl
     label: 'GATK GatherVcfsCloud'
     doc: 'Combine resultant VQSR VCFs'
     in:
       input_vcfs: gatk_applyrecalibration/recalibrated_vcf
       output_vcf_basename: output_vcf_basename
     out: [output]
+  peddy:
+    run: ../tools/kfdrc_peddy_tool.cwl
+    label: 'Peddy'
+    doc: 'QC family relationships and sex assignment'
+    in:
+      ped: ped
+      vqsr_vcf: gatk_gatherfinalvcf/output
+      output_basename: output_basename
+    out: [output_html, output_csv, output_peddy]
   picard_collectvariantcallingmetrics:
     run: ../tools/picard_collectvariantcallingmetrics.cwl
     label: 'CollectVariantCallingMetrics'
     doc: 'picard calculate variant calling metrics'
     in:
-      input_vcf: gatk_finalgathervcf/output
+      input_vcf: gatk_gatherfinalvcf/output
       reference_dict: reference_dict
       final_gvcf_base_name: output_vcf_basename
       dbsnp_vcf: dbsnp_vcf

@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_import_genotype_filtergvcf_merge
 requirements:
   - class: DockerRequirement
-    dockerPull: 'zhangb1/broad-gatk4.beta.5-picard'
+    dockerPull: 'kfdrc/gatk:4.0.5.2'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,37 +14,37 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk/gatk-launch --javaOptions "-Xms4g"
+      /gatk --javaOptions "-Xms4g"
       GenomicsDBImport
-      --genomicsDBWorkspace genomicsdb
+      --genomicsdb-workspace-path genomicsdb
       --batchSize 50
       -L $(inputs.interval.path)
-      --readerThreads 16
+      --reader-threads 16
       -ip 5
   - position: 2
     shellQuote: false
     valueFrom: >-
       && tar -cf genomicsdb.tar genomicsdb
       
-      /gatk/gatk-launch --javaOptions "-Xmx16g -Xms5g"
+      /gatk --javaOptions "-Xmx16g -Xms5g"
       GenotypeGVCFs
       -R $(inputs.ref_fasta.path)
       -O output.vcf.gz
       -D $(inputs.dbsnp_vcf.path)
       -G StandardAnnotation
-      --onlyOutputCallsStartingInIntervals
-      -newQual
+      --only-output-calls-starting-in-intervals
+      -new-qual
       -V gendb://genomicsdb
       -L $(inputs.interval.path)
       
-      /gatk/gatk-launch --javaOptions "-Xmx3g -Xms3g" 
+      /gatk --javaOptions "-Xmx3g -Xms3g"
       VariantFiltration 
       --filterExpression "ExcessHet > 54.69"
       --filterName ExcessHet
       -O variant_filtered.vcf.gz
       -V output.vcf.gz
 
-      java -Xmx3g -Xms3g -jar /picard.jar
+      /gatk
       MakeSitesOnlyVcf
       INPUT=variant_filtered.vcf.gz
       OUTPUT=sites_only.variant_filtered.vcf.gz

@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_gathervcfs
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.5'
+    dockerPull: 'kfdrc/gatk:4.0.5.2'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -14,11 +14,10 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk-launch --javaOptions "-Xmx6g -Xms6g"
+      /gatk --javaOptions "-Xmx6g -Xms6g"
       GatherVcfs
-      --ignoreSafetyChecks
-      --gatherType BLOCK
-      --output $(inputs.output_vcf_name)
+      --VALIDATION_STRINGENCY SILENT
+      --OUTPUT $(inputs.output_vcf_name)
 inputs:
   input_vcfs:
     type:
