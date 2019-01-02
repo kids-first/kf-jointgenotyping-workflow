@@ -14,10 +14,10 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk --javaOptions "-Xmx6g -Xms6g"
+      /gatk --java-options "-Xmx6g -Xms6g"
       GatherVcfsCloud
-      --ignoreSafetyChecks
-      --gatherType BLOCK
+      --ignore-safety-checks
+      --gather-type BLOCK
       --output sites_only.vcf.gz
   - position: 2
     shellQuote: false

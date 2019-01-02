@@ -14,7 +14,7 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk --javaOptions "-Xms4g"
+      /gatk --java-options "-Xms4g"
       GenomicsDBImport
       --genomicsdb-workspace-path genomicsdb
       --batchSize 50
@@ -26,7 +26,7 @@ arguments:
     valueFrom: >-
       && tar -cf genomicsdb.tar genomicsdb
       
-      /gatk --javaOptions "-Xmx16g -Xms5g"
+      /gatk --java-options "-Xmx16g -Xms5g"
       GenotypeGVCFs
       -R $(inputs.reference_fasta.path)
       -O output.vcf.gz
@@ -37,7 +37,7 @@ arguments:
       -V gendb://genomicsdb
       -L $(inputs.interval.path)
       
-      /gatk --javaOptions "-Xmx3g -Xms3g"
+      /gatk --java-options "-Xmx3g -Xms3g"
       VariantFiltration 
       --filterExpression "ExcessHet > 54.69"
       --filterName ExcessHet
