@@ -16,7 +16,7 @@ arguments:
     valueFrom: >-
       /gatk --java-options "-Xms4g"
       GenomicsDBImport
-      --genomicsdb-workspace-path genomicsdb
+      --genomicsdb-workspace-path $PWD/genomicsdb
       --batchSize 50
       -L $(inputs.interval.path)
       --reader-threads 16
@@ -24,7 +24,7 @@ arguments:
   - position: 2
     shellQuote: false
     valueFrom: >-
-      && tar -cf genomicsdb.tar genomicsdb
+      && tar -cf $PWD/genomicsdb.tar $PWD/genomicsdb
       
       /gatk --java-options "-Xmx16g -Xms5g"
       GenotypeGVCFs
