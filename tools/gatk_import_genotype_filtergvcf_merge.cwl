@@ -39,8 +39,8 @@ arguments:
       
       /gatk --java-options "-Xmx3g -Xms3g"
       VariantFiltration 
-      --filterExpression "ExcessHet > 54.69"
-      --filterName ExcessHet
+      --filter-expression "ExcessHet > 54.69"
+      --filter-name ExcessHet
       -O variant_filtered.vcf.gz
       -V output.vcf.gz
 
