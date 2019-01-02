@@ -19,7 +19,7 @@ arguments:
       -XX:GCTimeLimit=50
       -XX:GCHeapFreeLimit=10"
       VariantFiltration
-      -R $(inputs.reference.path)
+      -R $(inputs.reference_fasta.path)
       -O $(inputs.output_basename).postCGP.Gfiltered.vcf.gz
       -V $(inputs.cgp_vcf.path)
       -G-filter "GQ < 20.0"

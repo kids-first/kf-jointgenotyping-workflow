@@ -28,7 +28,7 @@ arguments:
       
       /gatk --javaOptions "-Xmx16g -Xms5g"
       GenotypeGVCFs
-      -R $(inputs.ref_fasta.path)
+      -R $(inputs.reference_fasta.path)
       -O output.vcf.gz
       -D $(inputs.dbsnp_vcf.path)
       -G StandardAnnotation

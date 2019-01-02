@@ -19,7 +19,7 @@ arguments:
       -XX:GCTimeLimit=50
       -XX:GCHeapFreeLimit=10"
       CalculateGenotypePosteriors
-      -R $(inputs.reference.path)
+      -R $(inputs.reference_fasta.path)
       -O $(inputs.output_basename).postCGP.vcf.gz
       -V $(inputs.vqsr_vcf.path)
       --supporting $(inputs.snp_sites.path)
