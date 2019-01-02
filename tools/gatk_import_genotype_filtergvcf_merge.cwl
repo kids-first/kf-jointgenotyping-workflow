@@ -51,7 +51,7 @@ arguments:
 
 inputs:
   interval: File
-  ref_fasta:
+  reference_fasta:
     type: File
     secondaryFiles: [^.dict, .fai]
   dbsnp_vcf:

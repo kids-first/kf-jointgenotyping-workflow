@@ -11,23 +11,27 @@ inputs:
   unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals'}
   dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf'}
   output_vcf_basename: {type: string, doc: 'Output name for vcf without extension'}
-  ref_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta'}
+  reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta'}
   hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf'}
   omni_resource_vcf: {type: File, doc: '1000G_omni2.5.hg38.vcf.gz'}
   one_thousand_genomes_resource_vcf: {type: File, doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz'}
+  snp_sites: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf'}
   axiomPoly_resource_vcf: {type: File, doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz'}
   mills_resource_vcf: {type: File, doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz'}
   reference_dict: {type: File, doc: 'Homo_sapiens_assembly38.dict'}
   wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list'}
+  vep_cache: {type: File, doc: 'Variant effect predictor cache file'}
   ped: File
   output_basename: string
 
 outputs:
-  finalgathervcf: {type: File, doc: 'Joint call result vcf file', outputSource: gatk_gatherfinalvcf/output}
   collectvariantcallingmetrics: {type: 'File[]', doc: 'Variant calling summary and detailed metrics files', outputSource: picard_collectvariantcallingmetrics/output}
   peddy_html: {type: 'File[]', doc: 'html summary of peddy results', outputSource: peddy/output_html}
   peddy_csv: {type: 'File[]', doc: 'csv details of peddy results', outputSource: peddy/output_csv}
   peddy_ped: {type: 'File[]', doc: 'ped format summary of peddy results', outputSource: peddy/output_peddy}
+  cgp_vep_annotated_vcf: {type: File, outputSource: vep_annotate/output_vcf}
+  vcf_summary_stats: {type: File, outputSource: vep_annotate/output_txt}
+  vep_warn: {type: File, outputSource: vep_annotate/warn_txt}
 
 steps:
   dynamicallycombineintervals:
@@ -46,7 +50,7 @@ steps:
       input_vcfs: input_vcfs
       interval: dynamicallycombineintervals/out_intervals
       dbsnp_vcf: dbsnp_vcf
-      ref_fasta: ref_fasta
+      reference_fasta: reference_fasta
     scatter: [interval]
     out:
       [variant_filtered_vcf, sites_only_vcf]
@@ -139,6 +143,39 @@ steps:
       dbsnp_vcf: dbsnp_vcf
       wgs_evaluation_interval_list: wgs_evaluation_interval_list
     out: [output]
+  gatk_calculategenotypeposteriors:
+    in:
+      ped: ped
+      reference_fasta: reference_fasta
+      snp_sites: snp_sites
+      vqsr_vcf: gatk_gatherfinalvcf/output
+      output_basename: output_basename
+    out: [output]
+    run: ../tools/gatk_calculategenotypeposteriors.cwl
+  gatk_variantfiltration:
+    in:
+      cgp_vcf: gatk_calculategenotypeposteriors/output
+      reference_fasta: reference_fasta
+      output_basename: output_basename
+    out: [output]
+    run: ../tools/gatk_variantfiltration.cwl
+  gatk_variantannotator:
+    in:
+      cgp_filtered_vcf: gatk_variantfiltration/output
+      ped: ped
+      reference_fasta: reference_fasta
+      output_basename: output_basename
+    out: [output]
+    run: ../tools/gatk_variantannotator.cwl
+  vep_annotate:
+    in:
+      input_vcf: gatk_variantannotator/output
+      reference_fasta: reference_fasta
+      output_basename: output_basename
+      cache: vep_cache
+    out: [output]
+    run: ../tools/variant_effect_predictor.cwl
+
 
 $namespaces:
   sbg: https://sevenbridges.com
