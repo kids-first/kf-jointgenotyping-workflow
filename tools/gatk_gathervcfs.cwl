@@ -22,7 +22,7 @@ arguments:
   - position: 2
     shellQuote: false
     valueFrom: >-
-      && /tabix/tabix sites_only.vcf.gz
+      && /gatk IndexFeatureFile -F sites_only.vcf.gz
 inputs:
   input_vcfs:
     type:
