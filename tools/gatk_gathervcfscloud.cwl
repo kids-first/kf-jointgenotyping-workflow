@@ -22,7 +22,7 @@ arguments:
   - position: 2
     shellQuote: false
     valueFrom: >-
-      && /tabix/tabix $(inputs.output_vcf_basename + ".vcf.gz")
+      && /gatk IndexFeatureFile -F $(inputs.output_vcf_basename + ".vcf.gz")
 inputs:
   input_vcfs:
     type:
