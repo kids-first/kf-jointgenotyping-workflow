@@ -46,8 +46,8 @@ arguments:
 
       /gatk
       MakeSitesOnlyVcf
-      INPUT=variant_filtered.vcf.gz
-      OUTPUT=sites_only.variant_filtered.vcf.gz
+      -I variant_filtered.vcf.gz
+      -O sites_only.variant_filtered.vcf.gz
 
 inputs:
   interval: File
