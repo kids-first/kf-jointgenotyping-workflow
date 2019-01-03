@@ -17,7 +17,7 @@ arguments:
       /gatk --java-options "-Xms4g"
       GenomicsDBImport
       --genomicsdb-workspace-path genomicsdb
-      --TMP-DIR genomicsdb_tmp
+      --TMP_DIR genomicsdb_tmp
       --batch-size 50
       -L $(inputs.interval.path)
       --reader-threads 16
@@ -37,7 +37,7 @@ arguments:
       -new-qual
       -V gendb://genomicsdb
       -L $(inputs.interval.path)
-      --TMP-DIR GenotypeGVCFs_TMP
+      --TMP_DIR GenotypeGVCFs_TMP
       
       /gatk --java-options "-Xmx3g -Xms3g"
       VariantFiltration 
