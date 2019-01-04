@@ -19,6 +19,7 @@ arguments:
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O scatter.snps.recal
       --tranches-file scatter.snps.tranches
+      --output-tranches-for-scatter
       --trust-all-polymorphic
       --mode SNP
       --input_model $(inputs.model_report.path)

@@ -105,7 +105,7 @@ steps:
   gatk_applyrecalibration:
     run: ../tools/gatk_applyrecalibration.cwl
     label: 'GATK ApplyVQSR'
-    doc: 'Apply recalibration to sn[s and indels'
+    doc: 'Apply recalibration to snps and indels'
     in:
       indels_recalibration: gatk_indelsvariantrecalibrator/recalibration
       indels_tranches: gatk_indelsvariantrecalibrator/tranches

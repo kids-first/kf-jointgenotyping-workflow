@@ -67,7 +67,3 @@ outputs:
     type: File
     outputBinding:
       glob: snps.model.report
-  tranches:
-    type: File
-    outputBinding:
-      glob: snps.tranches
