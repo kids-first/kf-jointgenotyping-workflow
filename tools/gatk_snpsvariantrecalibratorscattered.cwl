@@ -22,7 +22,7 @@ arguments:
       --output-tranches-for-scatter
       --trust-all-polymorphic
       --mode SNP
-      --input_model $(inputs.model_report.path)
+      --input-model $(inputs.model_report.path)
       --max-gaussians 6
       -resource hapmap,known=false,training=true,truth=true,prior=15:$(inputs.hapmap_resource_vcf.path)
       -resource omni,known=false,training=true,truth=true,prior=12:$(inputs.omni_resource_vcf.path)
