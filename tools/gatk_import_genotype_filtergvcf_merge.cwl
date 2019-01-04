@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_import_genotype_filtergvcf_merge
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.5.2'
+    dockerPull: 'migbro/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -17,7 +17,6 @@ arguments:
       /gatk --java-options "-Xms4g"
       GenomicsDBImport
       --genomicsdb-workspace-path genomicsdb
-      --TMP_DIR genomicsdb_tmp
       --batch-size 50
       -L $(inputs.interval.path)
       --reader-threads 16
@@ -26,8 +25,10 @@ arguments:
     shellQuote: false
     valueFrom: >-
       && tar -cf genomicsdb.tar genomicsdb
-      
-      /gatk --java-options "-Xmx16g -Xms5g"
+  - position: 3
+    shellQuote: false
+    valueFrom: >-
+      && /gatk --java-options "-Xmx4g -Xms4g"
       GenotypeGVCFs
       -R $(inputs.reference_fasta.path)
       -O output.vcf.gz
@@ -37,16 +38,19 @@ arguments:
       -new-qual
       -V gendb://genomicsdb
       -L $(inputs.interval.path)
-      --TMP_DIR GenotypeGVCFs_TMP
-      
-      /gatk --java-options "-Xmx3g -Xms3g"
-      VariantFiltration 
+  - position: 4
+    shellQuote: false
+    valueFrom: >-
+      && /gatk --java-options "-Xmx3g -Xms3g"
+      VariantFiltration
       --filter-expression "ExcessHet > 54.69"
       --filter-name ExcessHet
       -O variant_filtered.vcf.gz
       -V output.vcf.gz
-
-      /gatk
+  - position: 5
+    shellQuote: false
+    valueFrom: >-
+      && /gatk
       MakeSitesOnlyVcf
       -I variant_filtered.vcf.gz
       -O sites_only.variant_filtered.vcf.gz
