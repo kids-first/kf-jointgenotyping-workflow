@@ -18,11 +18,10 @@ arguments:
       GatherVcfsCloud
       --ignore-safety-checks
       --gather-type BLOCK
-      --output sites_only_unsorted.vcf.gz
+      --output sites_only.vcf.gz
   - position: 2
     shellQuote: false
     valueFrom: >-
-      && /gatk SortVcf -I sites_only_unsorted.vcf.gz -O sites_only.vcf.gz
       && /gatk IndexFeatureFile -F sites_only.vcf.gz
 inputs:
   input_vcfs:
