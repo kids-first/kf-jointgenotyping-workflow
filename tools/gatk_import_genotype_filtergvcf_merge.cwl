@@ -8,7 +8,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     ramMin: 8000
-    coresMin: 2
+    coresMin: 1
 baseCommand: []
 arguments:
   - position: 0
