@@ -9,7 +9,7 @@ requirements:
     coresMin: 2
     coresMax: 4
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.5.2'
+    dockerPull: 'migbro/gatk:4.0.12.0'
 baseCommand: [/gatk]
 arguments:
   - position: 1

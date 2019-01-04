@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_snpsvariantrecalibratorscattered
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.5.2'
+    dockerPull: 'migbro/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement

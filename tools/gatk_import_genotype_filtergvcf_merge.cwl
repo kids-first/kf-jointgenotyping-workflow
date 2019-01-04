@@ -7,7 +7,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
-    ramMin: 4000
+    ramMin: 8000
     coresMin: 2
 baseCommand: []
 arguments:
@@ -28,7 +28,7 @@ arguments:
   - position: 3
     shellQuote: false
     valueFrom: >-
-      && /gatk --java-options "-Xmx4g -Xms4g"
+      && /gatk --java-options "-Xmx8g -Xms4g"
       GenotypeGVCFs
       -R $(inputs.reference_fasta.path)
       -O output.vcf.gz
