@@ -50,6 +50,7 @@ steps:
       interval: dynamicallycombineintervals/out_intervals
       dbsnp_vcf: dbsnp_vcf
       reference_fasta: reference_fasta
+      ped: ped
     scatter: [interval]
     out:
       [variant_filtered_vcf, sites_only_vcf]
@@ -158,17 +159,9 @@ steps:
       output_basename: output_basename
     out: [output]
     run: ../tools/gatk_variantfiltration.cwl
-  gatk_variantannotator:
-    in:
-      cgp_filtered_vcf: gatk_variantfiltration/output
-      ped: ped
-      reference_fasta: reference_fasta
-      output_basename: output_basename
-    out: [output]
-    run: ../tools/gatk_variantannotator.cwl
   vep_annotate:
     in:
-      input_vcf: gatk_variantannotator/output
+      input_vcf: gatk_variantfiltration/output
       reference_fasta: reference_fasta
       output_basename: output_basename
       cache: vep_cache

@@ -34,6 +34,8 @@ arguments:
       -O output.vcf.gz
       -D $(inputs.dbsnp_vcf.path)
       -G StandardAnnotation
+      -A PossibleDeNovo
+      -ped $(inputs.ped.path)
       --only-output-calls-starting-in-intervals
       -new-qual
       -V gendb://genomicsdb
@@ -63,6 +65,7 @@ inputs:
   dbsnp_vcf:
     type: File
     secondaryFiles: [.idx]
+  ped: File
   input_vcfs:
     type:
       type: array
