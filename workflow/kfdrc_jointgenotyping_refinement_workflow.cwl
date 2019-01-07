@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: Workflow
-id: kfdrc_jointgenotyping_workflow
+id: kfdrc_jointgenotyping_workflow_optimized
 label: Kids First DRC Joint Genotyping Workflow
 doc: 'Kids First Data Resource Center Joint Genotyping Workflow (cram-to-deNovoGVCF). Cohort sample variant calling and genotype refinement. Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow: <a href="https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145"> Germline short variant discovery (SNPs + Indels)</a>, to create joint trios (typically mother-father-child) variant calls. Peddy is run to raise any potential issues in family relation definitions and sex assignment.'
 requirements:
