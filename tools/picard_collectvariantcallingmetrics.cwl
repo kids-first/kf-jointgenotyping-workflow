@@ -5,7 +5,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
   - class: DockerRequirement
-    dockerPull: 'kfdrc/picard:2.8.3'
+    dockerPull: 'migbro/gatk:4.0.12.0'
   - class: ResourceRequirement
     ramMin: 7000
     coresMin: 8
@@ -14,7 +14,7 @@ arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      java -Xmx6g -Xms6g -jar /picard.jar
+      /gatk --java-options "-Xmx6g -Xms6g"
       CollectVariantCallingMetrics
       INPUT=$(inputs.input_vcf.path)
       OUTPUT=$(inputs.final_gvcf_base_name)
