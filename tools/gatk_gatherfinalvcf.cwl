@@ -18,7 +18,7 @@ arguments:
       GatherVcfsCloud
       --ignore-safety-checks
       --gather-type BLOCK
-      --output $(inputs.output_vcf_basename + '.vcf.gz')
+      --output $(inputs.output_basename + '.vcf.gz')
   - position: 2
     shellQuote: false
     valueFrom: >-
@@ -32,10 +32,10 @@ inputs:
         prefix: -I
     inputBinding:
       position: 1
-  output_vcf_basename: string
+  output_basename: string
 outputs:
   output:
     type: File
     outputBinding:
-      glob: $(inputs.output_vcf_basename + '.vcf.gz')
+      glob: $(inputs.output_basename + '.vcf.gz')
     secondaryFiles: [.tbi]

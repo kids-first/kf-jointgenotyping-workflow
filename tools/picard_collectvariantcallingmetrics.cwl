@@ -17,7 +17,7 @@ arguments:
       /gatk --java-options "-Xmx6g -Xms6g"
       CollectVariantCallingMetrics
       INPUT=$(inputs.input_vcf.path)
-      OUTPUT=$(inputs.final_gvcf_base_name)
+      OUTPUT=$(inputs.output_basename)
       DBSNP=$(inputs.dbsnp_vcf.path)
       SEQUENCE_DICTIONARY=$(inputs.reference_dict.path)
       TARGET_INTERVALS=$(inputs.wgs_evaluation_interval_list.path)
@@ -28,7 +28,7 @@ inputs:
     secondaryFiles: [.tbi]
   reference_dict:
     type: File
-  final_gvcf_base_name:
+  output_basename:
     type: string
   dbsnp_vcf:
     type: File

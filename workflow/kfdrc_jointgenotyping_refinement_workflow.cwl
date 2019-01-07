@@ -10,7 +10,6 @@ inputs:
   input_vcfs: {type: 'File[]', doc: 'Input array of individual sample gVCF files'}
   unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals'}
   dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf'}
-  output_vcf_basename: {type: string, doc: 'Output name for vcf without extension'}
   reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta'}
   hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf'}
   omni_resource_vcf: {type: File, doc: '1000G_omni2.5.hg38.vcf.gz'}
@@ -121,7 +120,7 @@ steps:
     doc: 'Combine resultant VQSR VCFs'
     in:
       input_vcfs: gatk_applyrecalibration/recalibrated_vcf
-      output_vcf_basename: output_vcf_basename
+      output_basename: output_basename
     out: [output]
   peddy:
     run: ../tools/kfdrc_peddy_tool.cwl
@@ -139,7 +138,7 @@ steps:
     in:
       input_vcf: gatk_gatherfinalvcf/output
       reference_dict: reference_dict
-      final_gvcf_base_name: output_vcf_basename
+      output_basename: output_basename
       dbsnp_vcf: dbsnp_vcf
       wgs_evaluation_interval_list: wgs_evaluation_interval_list
     out: [output]
