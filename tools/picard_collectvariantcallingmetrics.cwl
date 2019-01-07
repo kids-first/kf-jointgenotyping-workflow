@@ -16,12 +16,12 @@ arguments:
     valueFrom: >-
       /gatk --java-options "-Xmx6g -Xms6g"
       CollectVariantCallingMetrics
-      INPUT=$(inputs.input_vcf.path)
-      OUTPUT=$(inputs.output_basename)
-      DBSNP=$(inputs.dbsnp_vcf.path)
-      SEQUENCE_DICTIONARY=$(inputs.reference_dict.path)
-      TARGET_INTERVALS=$(inputs.wgs_evaluation_interval_list.path)
-      THREAD_COUNT=8
+      -I $(inputs.input_vcf.path)
+      -O $(inputs.output_basename)
+      --DBSNP $(inputs.dbsnp_vcf.path)
+      -SD $(inputs.reference_dict.path)
+      -TI $(inputs.wgs_evaluation_interval_list.path)
+      --THREAD_COUNT 8
 inputs:
   input_vcf:
     type: File
