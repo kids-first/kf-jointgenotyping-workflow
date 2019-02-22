@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: Workflow
-id: kf_jointgenotyping_workflow_optimized
+id: kf_jointgenotyping_workflow_optimized_and_refinement
 requirements:
   - class: ScatterFeatureRequirement
 
@@ -156,7 +156,5 @@ steps:
 $namespaces:
   sbg: https://sevenbridges.com
 hints:
-  - class: 'sbg:AWSInstanceType'
-    value: r4.2xlarge;ebs-gp2;500
   - class: 'sbg:maxNumberOfParallelInstances'
     value: 2
