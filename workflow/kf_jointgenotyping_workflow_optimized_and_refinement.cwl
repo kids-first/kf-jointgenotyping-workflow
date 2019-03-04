@@ -22,9 +22,6 @@ inputs:
   snp_sites: File
 
 outputs:
-  finalgathervcf:
-    type: File
-    outputSource: gatk_finalgathervcf/output
   collectvariantcallingmetrics:
     type: File[]
     outputSource: picard_collectvariantcallingmetrics/output
@@ -37,6 +34,15 @@ outputs:
   vep_warn:
     type: File
     outputSource: vep_annotate/warn_txt
+  output_html:
+    type: File[]
+    outputSource: peddy/output_html
+  output_csv:
+    type: File[]
+    outputSource: peddy/output_csv
+  output_peddy:
+    type: File[]
+    outputSource: peddy/output_peddy
 
 steps:
   dynamicallycombineintervals:
@@ -152,6 +158,13 @@ steps:
       cache: cache
     out: [output]
     run: ../tools/variant_effect_predictor.cwl
+  peddy:
+    in:
+      vqsr_vcf: gatk_finalgathervcf/output
+      ped: ped
+      output_basename: output_basename
+    out: [output]
+    run: ../tools/kf_peddy_tool.cwl
 
 $namespaces:
   sbg: https://sevenbridges.com
