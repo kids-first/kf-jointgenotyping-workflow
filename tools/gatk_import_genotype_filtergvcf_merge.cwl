@@ -9,6 +9,9 @@ requirements:
   - class: ResourceRequirement
     ramMin: 14000
     coresMin: 2
+hints:
+  - class: 'sbg:AWSInstanceType'
+    value: r4.2xlarge;ebs-gp2;500
 baseCommand: []
 arguments:
   - position: 0
