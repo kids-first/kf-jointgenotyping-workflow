@@ -50,7 +50,10 @@ outputs:
     type: File
     outputBinding:
       glob: '*.vcf.gz'
-    secondaryFiles: [.tbi]
+  output_vcf_tbi:
+    type: File
+    outputBinding:
+      glob: '*.vcf.gz.tbi'
   output_txt:
     type: File
     outputBinding:

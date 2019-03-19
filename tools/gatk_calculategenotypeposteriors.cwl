@@ -27,7 +27,7 @@ arguments:
 
 inputs:
   reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
-  snp_sites: {type: File, secondaryFiles: [.tbi]}
+  snp_sites: {type: File, secondaryFiles: [.idx]}
   vqsr_vcf: {type: File, secondaryFiles: [.tbi]}
   ped: File
   output_basename: string
