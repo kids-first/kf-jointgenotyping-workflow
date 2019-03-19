@@ -29,6 +29,7 @@ outputs:
   peddy_csv: {type: 'File[]', doc: 'csv details of peddy results', outputSource: peddy/output_csv}
   peddy_ped: {type: 'File[]', doc: 'ped format summary of peddy results', outputSource: peddy/output_peddy}
   cgp_vep_annotated_vcf: {type: File, outputSource: vep_annotate/output_vcf}
+  cgp_vep_annotated_vcf_tbi: {type: File, outputSource: vep_annotate/output_vcf_tbi}
   vcf_summary_stats: {type: File, outputSource: vep_annotate/output_txt}
   vep_warn: {type: File, outputSource: vep_annotate/warn_txt}
 
