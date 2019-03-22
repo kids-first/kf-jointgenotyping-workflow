@@ -7,7 +7,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
-    ramMin: 7000
+    ramMin: 6000
     coresMin: 2
 baseCommand: []
 arguments:

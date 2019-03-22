@@ -5,6 +5,9 @@ requirements:
   - class: DockerRequirement
     dockerPull: 'kfdrc/python:2.7.13'
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    ramMin: 8000
+    coresMin: 4
 baseCommand: [python, -c]
 arguments:
   - position: 0

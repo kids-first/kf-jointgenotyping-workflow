@@ -43,6 +43,10 @@ steps:
       interval: unpadded_intervals_file
     out: [out_intervals]
   gatk_import_genotype_filtergvcf_merge:
+    hints:
+      - class: 'sbg:AWSInstanceType'
+        value: m5.4xlarge;ebs-gp2;500
+    run: ../tools/gatk_haplotypecaller.cwl
     run: ../tools/gatk_import_genotype_filtergvcf_merge.cwl
     label: 'Genotype, filter, & merge'
     doc: 'Use GATK GenomicsDBImport, VariantFiltration GenotypeGVCFs, and picard MakeSitesOnlyVcf to genotype, filter and merge gVCF based on known sites'
@@ -84,6 +88,9 @@ steps:
       sites_only_variant_filtered_vcf: gatk_gathervcfs/output
     out: [recalibration, tranches]
   gatk_snpsvariantrecalibratorscattered:
+    hints:
+      - class: 'sbg:AWSInstanceType'
+        value: m5.2xlarge;ebs-gp2;500
     run: ../tools/gatk_snpsvariantrecalibratorscattered.cwl
     label: 'GATK VariantRecalibrator Scatter'
     doc: 'Create recalibration model for known sites from input data using GATK VariantRecalibrator, tranch values, and known site VCFs'
@@ -104,6 +111,9 @@ steps:
       tranches: gatk_snpsvariantrecalibratorscattered/tranches
     out: [output]
   gatk_applyrecalibration:
+    hints:
+      - class: 'sbg:AWSInstanceType'
+        value: m5.2xlarge;ebs-gp2;500
     run: ../tools/gatk_applyrecalibration.cwl
     label: 'GATK ApplyVQSR'
     doc: 'Apply recalibration to snps and indels'
@@ -173,7 +183,5 @@ steps:
 $namespaces:
   sbg: https://sevenbridges.com
 hints:
-  - class: 'sbg:AWSInstanceType'
-    value: r4.4xlarge;ebs-gp2;500
   - class: sbg:maxNumberOfParallelInstances
     value: 2
