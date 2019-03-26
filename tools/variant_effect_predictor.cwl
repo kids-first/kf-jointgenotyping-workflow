@@ -6,7 +6,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     ramMin: 24000
-    coresMin: 14
+    coresMin: 16
   - class: DockerRequirement
     dockerPull: 'kfdrc/vep:r93'
 baseCommand: [tar, -xzf ]
@@ -25,7 +25,7 @@ arguments:
       --offline
       --hgvs
       --hgvsg
-      --fork 14
+      --fork 15
       --sift b
       --vcf_info_field ANN
       -i $(inputs.input_vcf.path)
@@ -34,8 +34,8 @@ arguments:
       --stats_text
       --warning_file $(inputs.output_basename)_warnings.txt
       --fasta $(inputs.reference_fasta.path) |
-      /ensembl-vep/htslib/bgzip -c > $(inputs.output_basename).CGP.filtered.deNovo.vep.vcf.gz
-      && /ensembl-vep/htslib/tabix $(inputs.output_basename).CGP.filtered.deNovo.vep.vcf.gz
+      /ensembl-vep/htslib/bgzip -c > $(inputs.output_basename).postCGP.filtered.deNovo.vep.vcf.gz
+      && /ensembl-vep/htslib/tabix $(inputs.output_basename).postCGP.filtered.deNovo.vep.vcf.gz
 
 inputs:
   reference_fasta: { type: File,  secondaryFiles: [.fai], label: Fasta genome assembly with index }

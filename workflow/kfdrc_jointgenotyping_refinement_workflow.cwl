@@ -46,7 +46,6 @@ steps:
     hints:
       - class: 'sbg:AWSInstanceType'
         value: m5.4xlarge;ebs-gp2;500
-    run: ../tools/gatk_haplotypecaller.cwl
     run: ../tools/gatk_import_genotype_filtergvcf_merge.cwl
     label: 'Genotype, filter, & merge'
     doc: 'Use GATK GenomicsDBImport, VariantFiltration GenotypeGVCFs, and picard MakeSitesOnlyVcf to genotype, filter and merge gVCF based on known sites'
@@ -55,7 +54,6 @@ steps:
       interval: dynamicallycombineintervals/out_intervals
       dbsnp_vcf: dbsnp_vcf
       reference_fasta: reference_fasta
-      ped: ped
     scatter: [interval]
     out:
       [variant_filtered_vcf, sites_only_vcf]
@@ -170,9 +168,17 @@ steps:
       output_basename: output_basename
     out: [output]
     run: ../tools/gatk_variantfiltration.cwl
+  gatk_variantannotator:
+    in:
+      cgp_filtered_vcf: gatk_variantfiltration/output
+      ped: ped
+      reference_fasta: reference_fasta
+      output_basename: output_basename
+    out: [output]
+    run: ../tools/gatk_variantannotator.cwl
   vep_annotate:
     in:
-      input_vcf: gatk_variantfiltration/output
+      input_vcf: gatk_variantannotator/output
       reference_fasta: reference_fasta
       output_basename: output_basename
       cache: vep_cache
