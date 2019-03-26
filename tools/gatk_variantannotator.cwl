@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
-id: kfdrc-gatk_variantfiltration
+id: kfdrc-gatk_variantannotator
 requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
@@ -9,25 +9,28 @@ requirements:
     coresMin: 2
     coresMax: 4
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.12.0'
-baseCommand: [/gatk]
+    dockerPull: 'kfdrc/gatk:3.8_ubuntu'
+baseCommand: [java]
 arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      --java-options "-Xms8000m
+      -Xms8000m
       -XX:GCTimeLimit=50
-      -XX:GCHeapFreeLimit=10"
-      VariantFiltration
+      -XX:GCHeapFreeLimit=10
+      -jar /GenomeAnalysisTK.jar
+      -T VariantAnnotator
       -R $(inputs.reference_fasta.path)
-      -O $(inputs.output_basename).postCGP.Gfiltered.vcf.gz
-      -V $(inputs.cgp_vcf.path)
-      -G-filter "GQ < 20.0"
-      -G-filter-name lowGQ
+      -o $(inputs.output_basename).postCGP.Gfiltered.deNovos.vcf.gz
+      -V $(inputs.cgp_filtered_vcf.path)
+      -A PossibleDeNovo
+      -ped $(inputs.ped.path)
+      --pedigreeValidationType STRICT
 
 inputs:
   reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
-  cgp_vcf: {type: File, secondaryFiles: [.tbi]}
+  cgp_filtered_vcf: {type: File, secondaryFiles: [.tbi]}
+  ped: File
   output_basename: string
 outputs:
   output:
