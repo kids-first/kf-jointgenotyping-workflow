@@ -5,7 +5,7 @@ requirements:
   - class: ScatterFeatureRequirement
 
 inputs:
-  input_gvcf: File
+  input_gvcf: File[]
   unpadded_intervals_file: File
   input_id: string
   dbsnp_vcf: File
