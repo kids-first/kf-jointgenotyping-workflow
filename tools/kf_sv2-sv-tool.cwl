@@ -9,10 +9,13 @@ requirements:
   - class: DockerRequirement
     dockerPull: 'migbro/sv2:latest'
   - class: MultipleInputFeatureRequirement
+baseCommand: ["/bin/bash", "-c"]
 arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
+      set -eo pipefail
+
       tar -xzf $(inputs.sv2_ref.path)
       && /seq_cache_populate.pl
       -root $PWD/ref_cache

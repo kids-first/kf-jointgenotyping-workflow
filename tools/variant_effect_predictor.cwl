@@ -9,11 +9,14 @@ requirements:
     coresMin: 14
   - class: DockerRequirement
     dockerPull: 'kfdrc/vep:r93'
-baseCommand: [tar, -xzf ]
+baseCommand: ["/bin/bash", "-c"]
 arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
+      set -eo pipefail
+
+      tar -xzf
       $(inputs.cache.path)
       && perl /ensembl-vep/vep
       --cache --dir_cache $PWD
