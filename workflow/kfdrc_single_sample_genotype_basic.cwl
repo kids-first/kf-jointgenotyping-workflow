@@ -1,8 +1,6 @@
 cwlVersion: v1.0
 class: Workflow
 id: kfdrc_single_genotype_basic
-label: Kids First DRC Joint Genotyping Workflow
-doc: 'Kids First Data Resource Center Joint Genotyping Workflow (cram-to-deNovoGVCF). Cohort sample variant calling and genotype refinement. Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow: <a href="https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145"> Germline short variant discovery (SNPs + Indels)</a>, to create joint trios (typically mother-father-child) variant calls. Peddy is run to raise any potential issues in family relation definitions and sex assignment.'
 requirements:
   - class: ScatterFeatureRequirement
 
@@ -20,7 +18,7 @@ inputs:
   reference_dict: {type: File, doc: 'Homo_sapiens_assembly38.dict'}
   wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list'}
   output_basename: string
-  ped: {type: ['null'], File}
+  ped: {type: ['null', File]}
 
 outputs:
   collectvariantcallingmetrics: {type: 'File[]', doc: 'Variant calling summary and detailed metrics files', outputSource: picard_collectvariantcallingmetrics/output}
