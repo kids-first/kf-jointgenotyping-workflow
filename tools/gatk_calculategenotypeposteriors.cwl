@@ -23,13 +23,19 @@ arguments:
       -O $(inputs.output_basename).postCGP.vcf.gz
       -V $(inputs.vqsr_vcf.path)
       --supporting $(inputs.snp_sites.path)
-      --pedigree $(inputs.ped.path)
+      ${
+        var arg = "";
+        if (inputs.ped != null){
+          arg += " --pedigree " + inputs.ped.path;
+        }
+        return arg;
+      }
 
 inputs:
   reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
   snp_sites: {type: File, secondaryFiles: [.idx]}
   vqsr_vcf: {type: File, secondaryFiles: [.tbi]}
-  ped: File
+  ped: {type: ['null', File]}
   output_basename: string
 outputs:
   output:
