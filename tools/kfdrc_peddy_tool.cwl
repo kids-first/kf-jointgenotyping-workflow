@@ -16,7 +16,7 @@ arguments:
       -m peddy
       -p 4
       --sites hg38
-      --prefix $(inputs.output_basename)
+      --prefix $(inputs.output_basename).peddy
       --plot
       $(inputs.vqsr_vcf.path)
       $(inputs.ped.path)

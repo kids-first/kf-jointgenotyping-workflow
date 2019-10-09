@@ -38,7 +38,8 @@ arguments:
       && /ensembl-vep/htslib/tabix $(inputs.output_basename).CGP.filtered.deNovo.vep.vcf.gz
 
 inputs:
-  reference_fasta: { type: File,  secondaryFiles: [.fai], label: Fasta genome assembly with index }
+  reference_fasta: { type: File}
+  reference_fai: {type: File}
   input_vcf:
     type: File
     secondaryFiles: [.tbi]

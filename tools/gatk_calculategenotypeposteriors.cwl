@@ -9,7 +9,7 @@ requirements:
     coresMin: 2
     coresMax: 4
   - class: DockerRequirement
-    dockerPull: 'migbro/gatk:4.0.12.0'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
 baseCommand: [/gatk]
 arguments:
   - position: 1
@@ -26,7 +26,9 @@ arguments:
       --pedigree $(inputs.ped.path)
 
 inputs:
-  reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
+  reference_fasta: {type: File}
+  reference_dict: {type: File}
+  reference_fai: {type: File}
   snp_sites: {type: File, secondaryFiles: [.idx]}
   vqsr_vcf: {type: File, secondaryFiles: [.tbi]}
   ped: File
