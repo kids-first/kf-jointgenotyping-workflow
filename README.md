@@ -34,7 +34,6 @@ Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow
     -  homo_sapiens_vep_93_GRCh38_convert_cache.tar.gz, from ftp://ftp.ensembl.org/pub/release-93/variation/indexed_vep_cache/ - variant effect predictor cache.
     -  wgs_evaluation_regions.hg38.interval_list
 
-
 ## basic info
 ![pipeline flowchart](./docs/kfdrc_jointgenotyping_refinement_workflow.cwl.png)
 - tool images: https://hub.docker.com/r/kfdrc/
