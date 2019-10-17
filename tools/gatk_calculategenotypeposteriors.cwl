@@ -32,7 +32,9 @@ arguments:
       }
 
 inputs:
-  reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
+  reference_fasta: {type: File}
+  reference_dict: {type: File}
+  reference_fai: {type: File}
   snp_sites: {type: File, secondaryFiles: [.idx]}
   vqsr_vcf: {type: File, secondaryFiles: [.tbi]}
   ped: {type: ['null', File]}

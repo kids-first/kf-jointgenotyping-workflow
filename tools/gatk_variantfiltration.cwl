@@ -26,7 +26,9 @@ arguments:
       -G-filter-name lowGQ
 
 inputs:
-  reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
+  reference_fasta: {type: File}
+  reference_dict: {type: File}
+  reference_fai: {type: File}
   cgp_vcf: {type: File, secondaryFiles: [.tbi]}
   output_basename: string
 outputs:

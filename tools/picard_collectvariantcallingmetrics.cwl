@@ -5,7 +5,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
   - class: DockerRequirement
-    dockerPull: 'migbro/gatk:4.0.12.0'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
   - class: ResourceRequirement
     ramMin: 7000
     coresMin: 8
@@ -17,6 +17,7 @@ arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
+      /gatk IndexFeatureFile -F $(inputs.dbsnp_vcf.path) &&
       /gatk --java-options "-Xmx6g -Xms6g"
       CollectVariantCallingMetrics
       -I $(inputs.input_vcf.path)
@@ -35,7 +36,6 @@ inputs:
     type: string
   dbsnp_vcf:
     type: File
-    secondaryFiles: [.idx]
   wgs_evaluation_interval_list:
     type: File
 outputs:

@@ -28,7 +28,9 @@ arguments:
       --pedigreeValidationType STRICT
 
 inputs:
-  reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
+  reference_fasta: {type: File}
+  reference_fai: {type: File}
+  reference_dict: {type: File}
   cgp_filtered_vcf: {type: File, secondaryFiles: [.tbi]}
   ped: File
   output_basename: string

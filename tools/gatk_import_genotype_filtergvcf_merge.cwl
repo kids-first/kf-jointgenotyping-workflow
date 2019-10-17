@@ -59,7 +59,10 @@ inputs:
   interval: File
   reference_fasta:
     type: File
-    secondaryFiles: [^.dict, .fai]
+  reference_fai:
+    type: File
+  reference_dict:
+    type: File
   dbsnp_vcf:
     type: File
     secondaryFiles: [.idx]
