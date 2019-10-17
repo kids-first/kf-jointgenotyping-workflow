@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
-id: gatk_collectgvcfcallingmetrics
+id: picard_collectgvcfcallingmetrics
 requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
@@ -9,6 +9,9 @@ requirements:
   - class: ResourceRequirement
     ramMin: 7000
     coresMin: 8
+hints:
+  - class: 'sbg:AWSInstanceType'
+    value: r4.2xlarge;ebs-gp2;500
 baseCommand: []
 arguments:
   - position: 1

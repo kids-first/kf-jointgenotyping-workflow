@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_import_genotype_filtergvcf_merge
 requirements:
   - class: DockerRequirement
-    dockerPull: 'migbro/gatk:4.0.12.0'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement

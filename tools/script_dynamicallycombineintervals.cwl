@@ -5,6 +5,9 @@ requirements:
   - class: DockerRequirement
     dockerPull: 'kfdrc/python:2.7.13'
   - class: InlineJavascriptRequirement
+hints:
+  - class: 'sbg:AWSInstanceType'
+    value: r4.2xlarge;ebs-gp2;500
 baseCommand: [python, -c]
 arguments:
   - position: 0
