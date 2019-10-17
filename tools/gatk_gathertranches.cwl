@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_gathertranches
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.5'
+    dockerPull: 'migbro/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: ResourceRequirement
     ramMin: 7000
@@ -16,7 +16,7 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk-launch --javaOptions "-Xmx6g -Xms6g"
+      /gatk --java-options "-Xmx6g -Xms6g"
       GatherTranches
       --output snps.gathered.tranches
 inputs:

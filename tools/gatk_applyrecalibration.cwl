@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_applyrecalibration
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.1.2'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement

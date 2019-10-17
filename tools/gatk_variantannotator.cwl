@@ -20,7 +20,7 @@ arguments:
       -XX:GCHeapFreeLimit=10
       -jar /GenomeAnalysisTK.jar
       -T VariantAnnotator
-      -R $(inputs.reference.path)
+      -R $(inputs.reference_fasta.path)
       -o $(inputs.output_basename).postCGP.Gfiltered.deNovos.vcf.gz
       -V $(inputs.cgp_filtered_vcf.path)
       -A PossibleDeNovo
@@ -28,7 +28,7 @@ arguments:
       --pedigreeValidationType STRICT
 
 inputs:
-  reference: {type: File, secondaryFiles: [^.dict, .fai]}
+  reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
   cgp_filtered_vcf: {type: File, secondaryFiles: [.tbi]}
   ped: File
   output_basename: string

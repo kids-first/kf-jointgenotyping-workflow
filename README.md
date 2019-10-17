@@ -35,6 +35,6 @@ Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow
     -  wgs_evaluation_regions.hg38.interval_list
 
 ## basic info
-![pipeline flowchart](./docs/kf_jointgenotyping_workflow_optimized_and_refinement.cwl.png)
+![pipeline flowchart](./docs/kfdrc_jointgenotyping_refinement_workflow.cwl.png)
 - tool images: https://hub.docker.com/r/kfdrc/
 - dockerfiles: https://github.com/d3b-center/bixtools

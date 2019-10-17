@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_snpsvariantrecalibratorscattered
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.5'
+    dockerPull: 'migbro/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -17,16 +17,16 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk-launch --javaOptions "-Xmx3g -Xms3g"
+      /gatk --java-options "-Xmx3g -Xms3g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O scatter.snps.recal
-      -tranchesFile scatter.snps.tranches
-      -allPoly
-      -mode SNP
-      --input_model $(inputs.model_report.path)
-      -scatterTranches
-      --maxGaussians 6
+      --tranches-file scatter.snps.tranches
+      --output-tranches-for-scatter
+      --trust-all-polymorphic
+      --mode SNP
+      --input-model $(inputs.model_report.path)
+      --max-gaussians 6
       -resource hapmap,known=false,training=true,truth=true,prior=15:$(inputs.hapmap_resource_vcf.path)
       -resource omni,known=false,training=true,truth=true,prior=12:$(inputs.omni_resource_vcf.path)
       -resource 1000G,known=false,training=true,truth=false,prior=10:$(inputs.one_thousand_genomes_resource_vcf.path)

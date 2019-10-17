@@ -9,7 +9,7 @@ requirements:
     coresMin: 2
     coresMax: 4
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.5.2'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
 baseCommand: [/gatk]
 arguments:
   - position: 1
@@ -19,14 +19,14 @@ arguments:
       -XX:GCTimeLimit=50
       -XX:GCHeapFreeLimit=10"
       VariantFiltration
-      -R $(inputs.reference.path)
+      -R $(inputs.reference_fasta.path)
       -O $(inputs.output_basename).postCGP.Gfiltered.vcf.gz
       -V $(inputs.cgp_vcf.path)
       -G-filter "GQ < 20.0"
       -G-filter-name lowGQ
 
 inputs:
-  reference: {type: File, secondaryFiles: [^.dict, .fai]}
+  reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
   cgp_vcf: {type: File, secondaryFiles: [.tbi]}
   output_basename: string
 outputs:

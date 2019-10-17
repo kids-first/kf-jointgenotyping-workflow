@@ -9,14 +9,11 @@ requirements:
     coresMin: 14
   - class: DockerRequirement
     dockerPull: 'kfdrc/vep:r93'
-baseCommand: ["/bin/bash", "-c"]
+baseCommand: [tar, -xzf ]
 arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      set -eo pipefail
-
-      tar -xzf
       $(inputs.cache.path)
       && perl /ensembl-vep/vep
       --cache --dir_cache $PWD
@@ -36,12 +33,12 @@ arguments:
       --stats_file $(inputs.output_basename)_stats.txt
       --stats_text
       --warning_file $(inputs.output_basename)_warnings.txt
-      --fasta $(inputs.reference.path) |
+      --fasta $(inputs.reference_fasta.path) |
       /ensembl-vep/htslib/bgzip -c > $(inputs.output_basename).CGP.filtered.deNovo.vep.vcf.gz
       && /ensembl-vep/htslib/tabix $(inputs.output_basename).CGP.filtered.deNovo.vep.vcf.gz
 
 inputs:
-  reference: { type: File,  secondaryFiles: [.fai], label: Fasta genome assembly with index }
+  reference_fasta: { type: File,  secondaryFiles: [.fai], label: Fasta genome assembly with index }
   input_vcf:
     type: File
     secondaryFiles: [.tbi]

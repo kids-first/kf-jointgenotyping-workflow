@@ -5,7 +5,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
   - class: DockerRequirement
-    dockerPull: 'kfdrc/picard:2.8.3'
+    dockerPull: 'migbro/gatk:4.0.12.0'
   - class: ResourceRequirement
     ramMin: 7000
     coresMin: 8
@@ -17,21 +17,21 @@ arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      java -Xmx6g -Xms6g -jar /picard.jar
+      /gatk --java-options "-Xmx6g -Xms6g"
       CollectVariantCallingMetrics
-      INPUT=$(inputs.input_vcf.path)
-      OUTPUT=$(inputs.final_gvcf_base_name)
-      DBSNP=$(inputs.dbsnp_vcf.path)
-      SEQUENCE_DICTIONARY=$(inputs.reference_dict.path)
-      TARGET_INTERVALS=$(inputs.wgs_evaluation_interval_list.path)
-      THREAD_COUNT=8
+      -I $(inputs.input_vcf.path)
+      -O $(inputs.output_basename)
+      --DBSNP $(inputs.dbsnp_vcf.path)
+      -SD $(inputs.reference_dict.path)
+      -TI $(inputs.wgs_evaluation_interval_list.path)
+      --THREAD_COUNT 8
 inputs:
   input_vcf:
     type: File
     secondaryFiles: [.tbi]
   reference_dict:
     type: File
-  final_gvcf_base_name:
+  output_basename:
     type: string
   dbsnp_vcf:
     type: File

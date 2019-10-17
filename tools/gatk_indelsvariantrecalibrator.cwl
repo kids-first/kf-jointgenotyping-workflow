@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_indelsvariantrecalibrator
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.beta.5'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
@@ -17,14 +17,14 @@ arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk-launch --javaOptions "-Xmx24g -Xms24g"
+      /gatk --java-options "-Xmx24g -Xms24g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O indels.recal
-      -tranchesFile indels.tranches
-      -allPoly
-      -mode INDEL
-      --maxGaussians 4
+      --tranches-file indels.tranches
+      --trust-all-polymorphic
+      --mode INDEL
+      --max-gaussians 4
       -resource mills,known=false,training=true,truth=true,prior=12:$(inputs.mills_resource_vcf.path)
       -resource axiomPoly,known=false,training=true,truth=false,prior=10:$(inputs.axiomPoly_resource_vcf.path)
       -resource dbsnp,known=true,training=false,truth=false,prior=2:$(inputs.dbsnp_resource_vcf.path)

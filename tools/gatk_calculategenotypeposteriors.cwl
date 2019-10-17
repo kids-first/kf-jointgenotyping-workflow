@@ -9,7 +9,7 @@ requirements:
     coresMin: 2
     coresMax: 4
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.5.2'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
 baseCommand: [/gatk]
 arguments:
   - position: 1
@@ -19,17 +19,23 @@ arguments:
       -XX:GCTimeLimit=50
       -XX:GCHeapFreeLimit=10"
       CalculateGenotypePosteriors
-      -R $(inputs.reference.path)
+      -R $(inputs.reference_fasta.path)
       -O $(inputs.output_basename).postCGP.vcf.gz
       -V $(inputs.vqsr_vcf.path)
       --supporting $(inputs.snp_sites.path)
-      --pedigree $(inputs.ped.path)
+      ${
+        var arg = "";
+        if (inputs.ped != null){
+          arg += " --pedigree " + inputs.ped.path;
+        }
+        return arg;
+      }
 
 inputs:
-  reference: {type: File, secondaryFiles: [^.dict, .fai]}
+  reference_fasta: {type: File, secondaryFiles: [^.dict, .fai]}
   snp_sites: {type: File, secondaryFiles: [.idx]}
   vqsr_vcf: {type: File, secondaryFiles: [.tbi]}
-  ped: File
+  ped: {type: ['null', File]}
   output_basename: string
 outputs:
   output:
