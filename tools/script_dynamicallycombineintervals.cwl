@@ -11,6 +11,7 @@ hints:
 baseCommand: [python, -c]
 arguments:
   - position: 0
+    shellQuote: true
     valueFrom: >-
       def parse_interval(interval):
           colon_split = interval.split(":")
