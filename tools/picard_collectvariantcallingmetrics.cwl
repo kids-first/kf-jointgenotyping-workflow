@@ -5,7 +5,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
   - class: DockerRequirement
-    dockerPull: 'migbro/gatk:4.0.12.0'
+    dockerPull: 'kfdrc/gatk:4.0.12.0'
   - class: ResourceRequirement
     ramMin: 7000
     coresMin: 8
