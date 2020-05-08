@@ -1,17 +1,16 @@
 cwlVersion: v1.0
 class: Workflow
-id: kfdrc_joint_genotyping_workflow
-label: Kids First DRC Joint Genotyping Workflow
+id: kfdrc_single_genotyping_workflow
+label: Kids First DRC Single Sample Genotyping Workflow
 doc: |-
-  Kids First Data Resource Center Joint Genotyping Workflow (cram-to-deNovoGVCF). Cohort sample variant calling and genotype refinement.
+  Kids First Data Resource Center Single Sample Genotyping Workflow (cram-to-deNovoGVCF). Cohort sample variant calling and genotype refinement.
 
   ![data service logo](https://github.com/d3b-center/d3b-research-workflows/raw/master/doc/kfdrc-logo-sm.png)
 
   Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow:
   [Germline short variant discovery (SNPs + Indels)](https://gatk.broadinstitute.org/hc/en-us/articles/360035535932-Germline-short-variant-discovery-SNPs-Indels-),
-  to create family joint calling and joint trios (typically mother-father-child) variant calls.
-  Peddy is run to raise any potential issues in family relation definitions and sex assignment.
-  The git repo used to build this workflow can be found [here](https://github.com/kids-first/kf-jointgenotyping-workflow/).
+  to create variant calls. The git repo used to build this workflow can be found
+  [here](https://github.com/kids-first/kf-jointgenotyping-workflow/).
 
   ###Tips To Run:
 
@@ -50,25 +49,19 @@ inputs:
   omni_resource_tbi: {type: 'File?', doc: '1000G_omni2.5.hg38.vcf.gz.tbi'}
   one_thousand_genomes_resource_vcf: {type: File, doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz, high confidence snps'}
   one_thousand_genomes_resource_tbi: {type: 'File?', doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi, high confidence snps'}
-  ped: {type: File, doc: 'Ped file for the family relationship'}
-  reference_dict: {type: 'File?', doc: 'Homo_sapiens_assembly38.dict'}
+  ped: {type: 'File?', doc: 'Ped file for the family relationship'}
+  reference_dict: {type: File, doc: 'Homo_sapiens_assembly38.dict'}
   reference_fai: {type: 'File?', doc: 'Homo_sapiens_assembly38.fasta.fai'}
   reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta'}
   snp_sites_vcf: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf'}
   snp_sites_idx: {type: 'File?', doc: '1000G_phase3_v4_20130502.sites.hg38.vcf.idx'}
   unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals'}
-  vep_cache: {type: File, doc: 'Variant effect predictor cache file'}
   wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list'}
   output_basename: string
 
 outputs:
   collectvariantcallingmetrics: {type: 'File[]', doc: 'Variant calling summary and detailed metrics files', outputSource: picard_collectvariantcallingmetrics/output}
-  peddy_html: {type: 'File[]', doc: 'html summary of peddy results', outputSource: peddy/output_html}
-  peddy_csv: {type: 'File[]', doc: 'csv details of peddy results', outputSource: peddy/output_csv}
-  peddy_ped: {type: 'File[]', doc: 'ped format summary of peddy results', outputSource: peddy/output_peddy}
-  cgp_vep_annotated_vcf: {type: File, outputSource: vep_annotate/output_vcf}
-  vcf_summary_stats: {type: File, outputSource: vep_annotate/output_txt}
-  vep_warn: {type: 'File?', outputSource: vep_annotate/warn_txt}
+  gatk_filtered_vcf: {type: File, outputSource: gatk_variantfiltration/output}
 
 steps:
   prepare_reference:
@@ -165,7 +158,7 @@ steps:
     in:
       axiomPoly_resource_vcf: index_axiomPoly/output
       dbsnp_resource_vcf: index_dbsnp/output
-      mills_resource_vcf: index_mills/output
+      mills_resource_vcf: mills_resource_vcf
       sites_only_variant_filtered_vcf: gatk_gathervcfs/output
     out: [recalibration, tranches]
   gatk_snpsvariantrecalibratorscattered:
@@ -209,15 +202,6 @@ steps:
       input_vcfs: gatk_applyrecalibration/recalibrated_vcf
       output_basename: output_basename
     out: [output]
-  peddy:
-    run: ../tools/kfdrc_peddy_tool.cwl
-    label: 'Peddy'
-    doc: 'QC family relationships and sex assignment'
-    in:
-      ped: ped
-      vqsr_vcf: gatk_gatherfinalvcf/output
-      output_basename: output_basename
-    out: [output_html, output_csv, output_peddy]
   picard_collectvariantcallingmetrics:
     run: ../tools/picard_collectvariantcallingmetrics.cwl
     label: 'CollectVariantCallingMetrics'
@@ -231,11 +215,11 @@ steps:
     out: [output]
   gatk_calculategenotypeposteriors:
     in:
-      ped: ped
       reference_fasta: prepare_reference/indexed_fasta
       snp_sites: index_snp/output
       vqsr_vcf: gatk_gatherfinalvcf/output
       output_basename: output_basename
+      ped: ped
     out: [output]
     run: ../tools/gatk_calculategenotypeposteriors.cwl
   gatk_variantfiltration:
@@ -245,22 +229,6 @@ steps:
       output_basename: output_basename
     out: [output]
     run: ../tools/gatk_variantfiltration.cwl
-  gatk_variantannotator:
-    in:
-      cgp_filtered_vcf: gatk_variantfiltration/output
-      ped: ped
-      reference_fasta: prepare_reference/indexed_fasta
-      output_basename: output_basename
-    out: [output]
-    run: ../tools/gatk_variantannotator.cwl
-  vep_annotate:
-    in:
-      input_vcf: gatk_variantannotator/output
-      reference_fasta: prepare_reference/indexed_fasta
-      output_basename: output_basename
-      cache: vep_cache
-    out: [output_vcf,output_txt,warn_txt]
-    run: ../tools/variant_effect_predictor.cwl
 
 $namespaces:
   sbg: https://sevenbridges.com
