@@ -9,7 +9,7 @@ requirements:
   - class: DockerRequirement
     dockerPull: 'kfdrc/samtools:1.9'
   - class: InitialWorkDirRequirement
-    listing: [$(inputs.input_fasta),$(inputs.input_fai)]
+    listing: [$(inputs.input_fasta),$(inputs.input_index)]
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
   - class: ShellCommandRequirement

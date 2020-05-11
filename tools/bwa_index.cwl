@@ -1,6 +1,6 @@
 class: CommandLineTool
 cwlVersion: v1.0
-id: bwa_mem_naive
+id: bwa_index
 requirements:
   - class: ShellCommandRequirement
   - class: ResourceRequirement
