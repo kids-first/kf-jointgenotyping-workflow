@@ -50,7 +50,7 @@ inputs:
   one_thousand_genomes_resource_vcf: {type: File, doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz, high confidence snps'}
   one_thousand_genomes_resource_tbi: {type: 'File?', doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi, high confidence snps'}
   ped: {type: 'File?', doc: 'Ped file for the family relationship'}
-  reference_dict: {type: File, doc: 'Homo_sapiens_assembly38.dict'}
+  reference_dict: {type: 'File?', doc: 'Homo_sapiens_assembly38.dict'}
   reference_fai: {type: 'File?', doc: 'Homo_sapiens_assembly38.fasta.fai'}
   reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta'}
   snp_sites_vcf: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf'}
