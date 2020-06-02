@@ -35,4 +35,4 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.input_file.basename)
-    secondaryFiles: ${if (inputs.input_file.nameext == '.vcf') {return inputs.input_file.basename+'.idx'} else if (inputs.input_file.nameext == '.gz') {return inputs.input_file.basename+'.tbi'}}
+    secondaryFiles: [.idx] 
