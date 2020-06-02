@@ -6,6 +6,9 @@ Kids First Data Resource Center Joint Genotyping Workflow (cram-to-deNovoGVCF). 
 
 Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow: [Germline short variant discovery (SNPs + Indels)](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145), to create family joint calling and joint trios (typically mother-father-child) variant calls. Peddy is run to raise any potential issues in family relation definitions and sex assignment.
 
+### Runtime Estimates
+- Single 5 GB gVCF Input: 90 Minutes & $2.25
+- Trio of 6 GB gVCFs Input: 240 Minutes & $3.25 
 
 ### Tips To Run:
 

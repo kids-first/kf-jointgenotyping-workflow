@@ -79,7 +79,7 @@ steps:
       input_dict: reference_dict
     out: [indexed_fasta,reference_dict]
   index_axiomPoly:
-    run: ../tools/gatk_indexfeaturefile.cwl
+    run: ../tools/tabix_index.cwl
     in:
       input_file: axiomPoly_resource_vcf
       input_index: axiomPoly_resource_tbi
@@ -91,25 +91,25 @@ steps:
       input_index: dbsnp_idx
     out: [output]
   index_hapmap:
-    run: ../tools/gatk_indexfeaturefile.cwl
+    run: ../tools/tabix_index.cwl
     in:
       input_file: hapmap_resource_vcf
       input_index: hapmap_resource_tbi
     out: [output]
   index_mills:
-    run: ../tools/gatk_indexfeaturefile.cwl
+    run: ../tools/tabix_index.cwl
     in:
       input_file: mills_resource_vcf
       input_index: mills_resource_tbi
     out: [output]
   index_omni:
-    run: ../tools/gatk_indexfeaturefile.cwl
+    run: ../tools/tabix_index.cwl
     in:
       input_file: omni_resource_vcf
       input_index: omni_resource_tbi
     out: [output]
   index_1k:
-    run: ../tools/gatk_indexfeaturefile.cwl
+    run: ../tools/tabix_index.cwl
     in:
       input_file: one_thousand_genomes_resource_vcf
       input_index: one_thousand_genomes_resource_tbi
