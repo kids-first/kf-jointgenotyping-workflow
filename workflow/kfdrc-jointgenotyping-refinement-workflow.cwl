@@ -10,6 +10,7 @@ doc: |
 
   If you would like to run this workflow using the cavatica public app, a basic primer on running public apps can be found [here](https://www.notion.so/d3b/Starting-From-Scratch-Running-Cavatica-af5ebb78c38a4f3190e32e67b4ce12bb).
   Alternatively, if you'd like to run it locally using `cwltool`, a basic primer on that can be found [here](https://www.notion.so/d3b/Starting-From-Scratch-Running-CWLtool-b8dbbde2dc7742e4aff290b0a878344d) and combined with app-specific info from the readme below.
+  This workflow is the current production workflow, equivalent to this [Cavatica public app](https://cavatica.sbgenomics.com/public/apps#cavatica/apps-publisher/kfdrc-jointgenotyping-refinement-workflow).
 
   ![data service logo](https://github.com/d3b-center/d3b-research-workflows/raw/master/doc/kfdrc-logo-sm.png)
 
@@ -53,17 +54,17 @@ requirements:
 inputs:
   input_vcfs: {type: 'File[]', doc: 'Input array of individual sample gVCF files'}
   axiomPoly_resource_vcf: {type: File, doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz',
-    sbg:suggestedValue: {class: File, path: 5e9eff46e4b054952c25f669, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz}}
+    sbg:suggestedValue: {class: File, path: 5d9f63e9e4b03edc89a24c95, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz}}
   axiomPoly_resource_tbi: {type: 'File?', doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi',
-    sbg:suggestedValue: {class: File, path: 5e9eff46e4b054952c25f699, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi}}
+    sbg:suggestedValue: {class: File, path: 5f36987be4b0549560c9ce13, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi}}
   dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf', sbg:suggestedValue: {
       class: File, path: 5d9f63e9e4b03edc89a24c91, name: Homo_sapiens_assembly38.dbsnp138.vcf}}
   dbsnp_idx: {type: 'File?', doc: 'Homo_sapiens_assembly38.dbsnp138.vcf.idx', sbg:suggestedValue: {
       class: File, path: 5f3161b7e4b09d9a7b5f4fb7, name: Homo_sapiens_assembly38.dbsnp138.vcf.idx}}
   hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf', sbg:suggestedValue: {
-      class: File, path: 5e9eff46e4b054952c25f668, name: hapmap_3.3.hg38.vcf.gz}}
+      class: File, path: 5d9f63e9e4b03edc89a24c99, name: hapmap_3.3.hg38.vcf.gz}}
   hapmap_resource_tbi: {type: 'File?', doc: 'Hapmap genotype SNP input tbi', sbg:suggestedValue: {
-      class: File, path: 5e9eff46e4b054952c25f69f, name: hapmap_3.3.hg38.vcf.gz.tbi}}
+      class: File, path: 5f3698b6e4b0549560c9ce5f, name: hapmap_3.3.hg38.vcf.gz.tbi}}
   mills_resource_vcf: {type: File, doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz',
     sbg:suggestedValue: {class: File, path: 5d9f63e9e4b03edc89a24c92, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz}}
   mills_resource_tbi: {type: 'File?', doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi',
@@ -80,19 +81,19 @@ inputs:
       name: 1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi}}
   ped: {type: File, doc: 'Ped file for the family relationship'}
   reference_dict: {type: 'File?', doc: 'Homo_sapiens_assembly38.dict', sbg:suggestedValue: {
-      class: File, path: 5e9eff46e4b054952c25f68e, name: Homo_sapiens_assembly38.dict}}
+      class: File, path: 5d9f63e9e4b03edc89a24c90, name: Homo_sapiens_assembly38.dict}}
   reference_fai: {type: 'File?', doc: 'Homo_sapiens_assembly38.fasta.fai', sbg:suggestedValue: {
-      class: File, path: 5e9eff46e4b054952c25f6aa, name: Homo_sapiens_assembly38.fasta.fai}}
+      class: File, path: 5d9f63e9e4b03edc89a24c94, name: Homo_sapiens_assembly38.fasta.fai}}
   reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta', sbg:suggestedValue: {
-      class: File, path: 5e9eff46e4b054952c25f69d, name: Homo_sapiens_assembly38.fasta}}
+      class: File, path: 5d9f63e9e4b03edc89a24c96, name: Homo_sapiens_assembly38.fasta}}
   snp_sites_vcf: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf', sbg:suggestedValue: {
-      class: File, path: 5e9eff46e4b054952c25f69c, name: 1000G_phase3_v4_20130502.sites.hg38.vcf}}
+      class: File, path: 5d9f63e9e4b03edc89a24c93, name: 1000G_phase3_v4_20130502.sites.hg38.vcf}}
   snp_sites_idx: {type: 'File?', doc: '1000G_phase3_v4_20130502.sites.hg38.vcf.idx',
-    sbg:suggestedValue: {class: File, path: 5e9eff46e4b054952c25f66a, name: 1000G_phase3_v4_20130502.sites.hg38.vcf.idx}}
+    sbg:suggestedValue: {class: File, path: 5f36995fe4b0549560c9d7d0, name: 1000G_phase3_v4_20130502.sites.hg38.vcf.idx}}
   unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals',
-    sbg:suggestedValue: {class: File, path: 5e9eff46e4b054952c25f694, name: hg38.even.handcurated.20k.intervals}}
+    sbg:suggestedValue: {class: File, path: 5d9f63e9e4b03edc89a24c97, name: hg38.even.handcurated.20k.intervals}}
   vep_cache: {type: File, doc: 'Variant effect predictor cache file', sbg:suggestedValue: {
-      class: File, path: 5e9eff46e4b054952c25f6a9, name: homo_sapiens_vep_93_GRCh38_convert_cache.tar.gz}}
+      class: File, path: 5d9f63e9e4b03edc89a24c9b, name: homo_sapiens_vep_93_GRCh38_convert_cache.tar.gz}}
   wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list',
     sbg:suggestedValue: {class: File, path: 5d9f63e9e4b03edc89a24c9c, name: wgs_evaluation_regions.hg38.interval_list}}
   output_basename: string
@@ -319,5 +320,5 @@ sbg:categories:
 - VCF
 - VEP
 sbg:links:
-  - id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.1.0'
-    label: github-release
+- id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.1.1'
+  label: github-release
