@@ -40,4 +40,4 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
 - tool images: https://hub.docker.com/r/kfdrc/
 - dockerfiles: https://github.com/d3b-center/bixtools
 
-![pipeline flowchart](./docs/kfdrc-jointgenotyping-refinement-workflow.png)
+![pipeline flowchart](https://github.com/kids-first/kf-jointgenotyping-workflow/blob/master/docs/kfdrc-jointgenotyping-refinement-workflow.png?raw=true "Joint Genotyping Workflow")
