@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk_gathervcfs
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/gatk:4.0.12.0'
+    dockerPull: 'pgc-images.sbgenomics.com/d3b-bixu/gatk:4.0.12.0'
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
