@@ -42,7 +42,6 @@ doc: |
       -  wgs_evaluation_regions.hg38.interval_list
 
   ## Other Resources
-  - tool images: https://hub.docker.com/r/kfdrc/
   - dockerfiles: https://github.com/d3b-center/bixtools
 
   ![pipeline flowchart](https://github.com/kids-first/kf-jointgenotyping-workflow/blob/master/docs/kfdrc-jointgenotyping-refinement-workflow.png?raw=true "Joint Genotyping Workflow")
@@ -320,5 +319,5 @@ sbg:categories:
 - VCF
 - VEP
 sbg:links:
-- id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.1.1'
+- id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.2.0'
   label: github-release
