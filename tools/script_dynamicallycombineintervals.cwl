@@ -3,7 +3,7 @@ class: CommandLineTool
 id: script_dynamicallycombineintervals
 requirements:
   - class: DockerRequirement
-    dockerPull: 'kfdrc/python:2.7.13'
+    dockerPull: 'pgc-images.sbgenomics.com/d3b-bixu/python:2.7.13'
   - class: InlineJavascriptRequirement
 hints:
   - class: 'sbg:AWSInstanceType'
