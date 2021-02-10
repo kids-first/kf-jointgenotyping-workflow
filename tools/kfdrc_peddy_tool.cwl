@@ -7,7 +7,7 @@ requirements:
   - class: ResourceRequirement
     ramMin: 1000
   - class: DockerRequirement
-    dockerPull: 'pgc-images.sbgenomics.com/d3b-bixu/peddy:latest'
+    dockerPull: 'pgc-images.sbgenomics.com/d3b-bixu/peddy:v0.4.2'
 baseCommand: [python]
 arguments:
   - position: 1
