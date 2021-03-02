@@ -16,10 +16,11 @@ doc: |
 
   ### Runtime Estimates
   - Single 5 GB gVCF Input: 90 Minutes & $2.25
-  - Trio of 6 GB gVCFs Input: 240 Minutes & $3.25 
+  - Trio of 6 GB gVCFs Input: 240 Minutes & $3.25
 
   ### Tips To Run:
   1. inputs vcf files are the gVCF files from GATK Haplotype Caller, need to have the index **.tbi** files copy to the same project too.
+  1. If you are experiencing issues with Variant Recalibration either in VariantRecalibrator or ApplyVQSR, consider adjusting the max_gaussians. If a dataset gives fewer variants than the expected scale, the number of Gaussians for training should be turned down. Lowering the max-Gaussians forces the program to group variants into a smaller number of clusters, which results in more variants per cluster.
   1. ped file in the input shows the family relationship between samples, the format should be the same as in GATK website [link](https://gatkforums.broadinstitute.org/gatk/discussion/7696/pedigree-ped-files), the Individual ID, Paternal ID and Maternal ID must be the same as in the inputs vcf files header.
   1. Here we recommend to use GRCh38 as reference genome to do the analysis, positions in gVCF should be GRCh38 too.
   1. Reference locations:
@@ -95,6 +96,16 @@ inputs:
       class: File, path: 5d9f63e9e4b03edc89a24c9b, name: homo_sapiens_vep_93_GRCh38_convert_cache.tar.gz}}
   wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list',
     sbg:suggestedValue: {class: File, path: 5d9f63e9e4b03edc89a24c9c, name: wgs_evaluation_regions.hg38.interval_list}}
+  snp_max_gaussians: {type: 'int?', doc: "Interger value for max gaussians in SNP\
+      \ VariantRecalibration. If a dataset gives fewer variants than the expected\
+      \ scale, the number of Gaussians for training should be turned down. Lowering\
+      \ the max-Gaussians forces the program to group variants into a smaller number\
+      \ of clusters, which results in more variants per cluster."}
+  indel_max_gaussians: {type: 'int?', doc: "Interger value for max gaussians in INDEL\
+      \ VariantRecalibration. If a dataset gives fewer variants than the expected\
+      \ scale, the number of Gaussians for training should be turned down. Lowering\
+      \ the max-Gaussians forces the program to group variants into a smaller number\
+      \ of clusters, which results in more variants per cluster."}
   output_basename: string
 
 outputs:
@@ -195,6 +206,7 @@ steps:
       omni_resource_vcf: index_omni/output
       one_thousand_genomes_resource_vcf: index_1k/output
       sites_only_variant_filtered_vcf: gatk_gathervcfs/output
+      max_gaussians: snp_max_gaussians
     out: [model_report]
   gatk_indelsvariantrecalibrator:
     run: ../tools/gatk_indelsvariantrecalibrator.cwl
@@ -206,6 +218,7 @@ steps:
       dbsnp_resource_vcf: index_dbsnp/output
       mills_resource_vcf: index_mills/output
       sites_only_variant_filtered_vcf: gatk_gathervcfs/output
+      max_gaussians: indel_max_gaussians
     out: [recalibration, tranches]
   gatk_snpsvariantrecalibratorscattered:
     run: ../tools/gatk_snpsvariantrecalibratorscattered.cwl
@@ -219,6 +232,7 @@ steps:
       omni_resource_vcf: index_omni/output
       one_thousand_genomes_resource_vcf: index_1k/output
       dbsnp_resource_vcf: index_dbsnp/output
+      max_gaussians: snp_max_gaussians
     scatter: [sites_only_variant_filtered_vcf]
     out: [recalibration, tranches]
   gatk_gathertranches:

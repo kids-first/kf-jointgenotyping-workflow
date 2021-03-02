@@ -11,10 +11,11 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
 
 ### Runtime Estimates
 - Single 5 GB gVCF Input: 90 Minutes & $2.25
-- Trio of 6 GB gVCFs Input: 240 Minutes & $3.25 
+- Trio of 6 GB gVCFs Input: 240 Minutes & $3.25
 
 ### Tips To Run:
 1. inputs vcf files are the gVCF files from GATK Haplotype Caller, need to have the index **.tbi** files copy to the same project too.
+1. If you are experiencing issues with Variant Recalibration either in VariantRecalibrator or ApplyVQSR, consider adjusting the max_gaussians. If a dataset gives fewer variants than the expected scale, the number of Gaussians for training should be turned down. Lowering the max-Gaussians forces the program to group variants into a smaller number of clusters, which results in more variants per cluster.
 1. ped file in the input shows the family relationship between samples, the format should be the same as in GATK website [link](https://gatkforums.broadinstitute.org/gatk/discussion/7696/pedigree-ped-files), the Individual ID, Paternal ID and Maternal ID must be the same as in the inputs vcf files header.
 1. Here we recommend to use GRCh38 as reference genome to do the analysis, positions in gVCF should be GRCh38 too.
 1. Reference locations:
