@@ -26,7 +26,7 @@ arguments:
       --trust-all-polymorphic
       --mode SNP
       --input-model $(inputs.model_report.path)
-      --max-gaussians 6
+      --max-gaussians $(inputs.max_gaussians)
       -resource hapmap,known=false,training=true,truth=true,prior=15:$(inputs.hapmap_resource_vcf.path)
       -resource omni,known=false,training=true,truth=true,prior=12:$(inputs.omni_resource_vcf.path)
       -resource 1000G,known=false,training=true,truth=false,prior=10:$(inputs.one_thousand_genomes_resource_vcf.path)
@@ -67,6 +67,7 @@ inputs:
   dbsnp_resource_vcf:
     type: File
     secondaryFiles: [.idx]
+  max_gaussians: { type: int?, default: 6 }
 outputs:
   recalibration:
     type: File

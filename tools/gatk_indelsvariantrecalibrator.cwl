@@ -24,7 +24,7 @@ arguments:
       --tranches-file indels.tranches
       --trust-all-polymorphic
       --mode INDEL
-      --max-gaussians 4
+      --max-gaussians $(inputs.max_gaussians)
       -resource mills,known=false,training=true,truth=true,prior=12:$(inputs.mills_resource_vcf.path)
       -resource axiomPoly,known=false,training=true,truth=false,prior=10:$(inputs.axiomPoly_resource_vcf.path)
       -resource dbsnp,known=true,training=false,truth=false,prior=2:$(inputs.dbsnp_resource_vcf.path)
@@ -61,6 +61,7 @@ inputs:
   dbsnp_resource_vcf:
     type: File
     secondaryFiles: [.idx]
+  max_gaussians: { type: int?, default: 4 }
 outputs:
   recalibration:
     type: File

@@ -12,9 +12,9 @@ requirements:
 baseCommand: ["/bin/bash", "-c"]
 arguments:
   - position: 0
-    shellQuote: false
+    shellQuote: true
     valueFrom: >-
-      set -eo pipefail
+      set -e
 
       /gatk --java-options "-Xmx60g -Xms15g"
       VariantRecalibrator
@@ -24,7 +24,7 @@ arguments:
       --trust-all-polymorphic
       --mode SNP
       --output-model snps.model.report
-      --max-gaussians 6
+      --max-gaussians $(inputs.max_gaussians)
       -resource hapmap,known=false,training=true,truth=true,prior=15:$(inputs.hapmap_resource_vcf.path)
       -resource omni,known=false,training=true,truth=true,prior=12:$(inputs.omni_resource_vcf.path)
       -resource 1000G,known=false,training=true,truth=false,prior=10:$(inputs.one_thousand_genomes_resource_vcf.path)
@@ -48,7 +48,7 @@ arguments:
       -an MQ
       -an SOR
       -an DP
-      || (echo 'Failed with max gaussians 6, trying 4' && /gatk --java-options "-Xmx60g -Xms15g"
+      || (>%2 echo 'Failed with max gaussians $(inputs.max_gaussians), trying ${return Math.max(inputs.max_gaussians-2, 1)}' && /gatk --java-options "-Xmx60g -Xms15g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O snps.recal
@@ -56,7 +56,7 @@ arguments:
       --trust-all-polymorphic
       --mode SNP
       --output-model snps.model.report
-      --max-gaussians 4
+      --max-gaussians ${return Math.max(inputs.max_gaussians-2, 1)}
       -resource hapmap,known=false,training=true,truth=true,prior=15:$(inputs.hapmap_resource_vcf.path)
       -resource omni,known=false,training=true,truth=true,prior=12:$(inputs.omni_resource_vcf.path)
       -resource 1000G,known=false,training=true,truth=false,prior=10:$(inputs.one_thousand_genomes_resource_vcf.path)
@@ -97,6 +97,7 @@ inputs:
   dbsnp_resource_vcf:
     type: File
     secondaryFiles: [.idx]
+  max_gaussians: { type: int?, default: 6 }
 outputs:
   model_report:
     type: File
