@@ -26,7 +26,7 @@ doc: |
   1. Reference locations:
       - https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0/
       - kfdrc bucket: s3://kids-first-seq-data/broad-references/
-      - cavatica: https://cavatica.sbgenomics.com/u/yuankun/kf-reference/
+      - cavatica: https://cavatica.sbgenomics.com/u/kfdrc-harmonization/kf-references/
   1. Suggested inputs:
       -  Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz
       -  Homo_sapiens_assembly38.dbsnp138.vcf
