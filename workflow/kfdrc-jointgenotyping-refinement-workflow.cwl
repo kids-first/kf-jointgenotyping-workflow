@@ -333,5 +333,5 @@ sbg:categories:
 - VCF
 - VEP
 sbg:links:
-- id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.2.1'
+- id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.2.2'
   label: github-release
