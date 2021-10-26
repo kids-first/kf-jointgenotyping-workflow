@@ -7,17 +7,14 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
-    ramMin: 7000
+    ramMin: 4000
     coresMin: 1
-hints:
-  - class: 'sbg:AWSInstanceType'
-    value: r4.2xlarge;ebs-gp2;500
 baseCommand: []
 arguments:
   - position: 0
     shellQuote: false
     valueFrom: >-
-      /gatk --java-options "-Xmx3g -Xms3g"
+      /gatk --java-options "-Xmx3723m -Xms3723m"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O scatter.snps.recal
@@ -67,7 +64,7 @@ inputs:
   dbsnp_resource_vcf:
     type: File
     secondaryFiles: [.idx]
-  max_gaussians: { type: int?, default: 6 }
+  max_gaussians: { type: 'int?', default: 6 }
 outputs:
   recalibration:
     type: File

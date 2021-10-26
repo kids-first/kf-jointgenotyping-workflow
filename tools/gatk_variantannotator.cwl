@@ -15,7 +15,8 @@ arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      -Xms8000m
+      -Xms7447m
+      -Xmx7447m
       -XX:GCTimeLimit=50
       -XX:GCHeapFreeLimit=10
       -jar /GenomeAnalysisTK.jar

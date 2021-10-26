@@ -15,7 +15,8 @@ arguments:
   - position: 1
     shellQuote: false
     valueFrom: >-
-      --java-options "-Xms8000m
+      --java-options "-Xms7447m
+      -Xmx7447m
       -XX:GCTimeLimit=50
       -XX:GCHeapFreeLimit=10"
       VariantFiltration
