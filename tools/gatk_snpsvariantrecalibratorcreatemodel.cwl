@@ -7,7 +7,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
-    ramMin: 7000
+    ramMin: 60000
     coresMin: 1
 baseCommand: ["/bin/bash", "-c"]
 arguments:
@@ -16,7 +16,7 @@ arguments:
     valueFrom: >-
       set -e
 
-      /gatk --java-options "-Xmx60g -Xms15g"
+      /gatk --java-options "-Xmx59g -Xms15g"
       VariantRecalibrator
       -V $(inputs.sites_only_variant_filtered_vcf.path)
       -O snps.recal
@@ -97,7 +97,7 @@ inputs:
   dbsnp_resource_vcf:
     type: File
     secondaryFiles: [.idx]
-  max_gaussians: { type: int?, default: 6 }
+  max_gaussians: { type: 'int?', default: 6 }
 outputs:
   model_report:
     type: File

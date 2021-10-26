@@ -28,7 +28,7 @@ arguments:
   - position: 3
     shellQuote: false
     valueFrom: >-
-      && /gatk --java-options "-Xmx8g -Xms4g"
+      && /gatk --java-options "-Xmx7447m -Xms4g"
       GenotypeGVCFs
       -R $(inputs.reference_fasta.path)
       -O output.vcf.gz

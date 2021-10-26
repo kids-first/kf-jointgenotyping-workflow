@@ -54,48 +54,48 @@ requirements:
 inputs:
   input_vcfs: {type: 'File[]', doc: 'Input array of individual sample gVCF files'}
   axiomPoly_resource_vcf: {type: File, doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz',
-    sbg:suggestedValue: {class: File, path: 60639016357c3a53540ca7c7, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz}}
+    "sbg:suggestedValue": {class: File, path: 60639016357c3a53540ca7c7, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz}}
   axiomPoly_resource_tbi: {type: 'File?', doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi',
-    sbg:suggestedValue: {class: File, path: 6063901d357c3a53540ca81b, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi}}
-  dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf', sbg:suggestedValue: {
+    "sbg:suggestedValue": {class: File, path: 6063901d357c3a53540ca81b, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi}}
+  dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf', "sbg:suggestedValue": {
       class: File, path: 6063901f357c3a53540ca84b, name: Homo_sapiens_assembly38.dbsnp138.vcf}}
-  dbsnp_idx: {type: 'File?', doc: 'Homo_sapiens_assembly38.dbsnp138.vcf.idx', sbg:suggestedValue: {
+  dbsnp_idx: {type: 'File?', doc: 'Homo_sapiens_assembly38.dbsnp138.vcf.idx', "sbg:suggestedValue": {
       class: File, path: 6063901e357c3a53540ca834, name: Homo_sapiens_assembly38.dbsnp138.vcf.idx}}
-  hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf', sbg:suggestedValue: {
+  hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf', "sbg:suggestedValue": {
       class: File, path: 60639016357c3a53540ca7be, name: hapmap_3.3.hg38.vcf.gz}}
-  hapmap_resource_tbi: {type: 'File?', doc: 'Hapmap genotype SNP input tbi', sbg:suggestedValue: {
+  hapmap_resource_tbi: {type: 'File?', doc: 'Hapmap genotype SNP input tbi', "sbg:suggestedValue": {
       class: File, path: 60639016357c3a53540ca7c5, name: hapmap_3.3.hg38.vcf.gz.tbi}}
   mills_resource_vcf: {type: File, doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz',
-    sbg:suggestedValue: {class: File, path: 6063901a357c3a53540ca7f3, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz}}
+    "sbg:suggestedValue": {class: File, path: 6063901a357c3a53540ca7f3, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz}}
   mills_resource_tbi: {type: 'File?', doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi',
-    sbg:suggestedValue: {class: File, path: 6063901c357c3a53540ca806, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi}}
-  omni_resource_vcf: {type: File, doc: '1000G_omni2.5.hg38.vcf.gz', sbg:suggestedValue: {
+    "sbg:suggestedValue": {class: File, path: 6063901c357c3a53540ca806, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi}}
+  omni_resource_vcf: {type: File, doc: '1000G_omni2.5.hg38.vcf.gz', "sbg:suggestedValue": {
       class: File, path: 6063901e357c3a53540ca835, name: 1000G_omni2.5.hg38.vcf.gz}}
-  omni_resource_tbi: {type: 'File?', doc: '1000G_omni2.5.hg38.vcf.gz.tbi', sbg:suggestedValue: {
+  omni_resource_tbi: {type: 'File?', doc: '1000G_omni2.5.hg38.vcf.gz.tbi', "sbg:suggestedValue": {
       class: File, path: 60639016357c3a53540ca7b1, name: 1000G_omni2.5.hg38.vcf.gz.tbi}}
   one_thousand_genomes_resource_vcf: {type: File, doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz,
-      high confidence snps', sbg:suggestedValue: {class: File, path: 6063901c357c3a53540ca80f,
+      high confidence snps', "sbg:suggestedValue": {class: File, path: 6063901c357c3a53540ca80f,
       name: 1000G_phase1.snps.high_confidence.hg38.vcf.gz}}
   one_thousand_genomes_resource_tbi: {type: 'File?', doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi,
-      high confidence snps', sbg:suggestedValue: {class: File, path: 6063901e357c3a53540ca845,
+      high confidence snps', "sbg:suggestedValue": {class: File, path: 6063901e357c3a53540ca845,
       name: 1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi}}
   ped: {type: File, doc: 'Ped file for the family relationship'}
-  reference_dict: {type: 'File?', doc: 'Homo_sapiens_assembly38.dict', sbg:suggestedValue: {
+  reference_dict: {type: 'File?', doc: 'Homo_sapiens_assembly38.dict', "sbg:suggestedValue": {
       class: File, path: 60639019357c3a53540ca7e7, name: Homo_sapiens_assembly38.dict}}
-  reference_fai: {type: 'File?', doc: 'Homo_sapiens_assembly38.fasta.fai', sbg:suggestedValue: {
+  reference_fai: {type: 'File?', doc: 'Homo_sapiens_assembly38.fasta.fai', "sbg:suggestedValue": {
       class: File, path: 60639016357c3a53540ca7af, name: Homo_sapiens_assembly38.fasta.fai}}
-  reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta', sbg:suggestedValue: {
+  reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta', "sbg:suggestedValue": {
       class: File, path: 60639014357c3a53540ca7a3, name: Homo_sapiens_assembly38.fasta}}
-  snp_sites_vcf: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf', sbg:suggestedValue: {
+  snp_sites_vcf: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf', "sbg:suggestedValue": {
       class: File, path: 60639016357c3a53540ca7b5, name: 1000G_phase3_v4_20130502.sites.hg38.vcf}}
   snp_sites_idx: {type: 'File?', doc: '1000G_phase3_v4_20130502.sites.hg38.vcf.idx',
-    sbg:suggestedValue: {class: File, path: 6063901d357c3a53540ca819, name: 1000G_phase3_v4_20130502.sites.hg38.vcf.idx}}
+    "sbg:suggestedValue": {class: File, path: 6063901d357c3a53540ca819, name: 1000G_phase3_v4_20130502.sites.hg38.vcf.idx}}
   unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals',
-    sbg:suggestedValue: {class: File, path: 5f500135e4b0370371c051b1, name: hg38.even.handcurated.20k.intervals}}
-  vep_cache: {type: File, doc: 'Variant effect predictor cache file', sbg:suggestedValue: {
+    "sbg:suggestedValue": {class: File, path: 5f500135e4b0370371c051b1, name: hg38.even.handcurated.20k.intervals}}
+  vep_cache: {type: File, doc: 'Variant effect predictor cache file', "sbg:suggestedValue": {
       class: File, path: 5f500135e4b0370371c051b5, name: homo_sapiens_vep_93_GRCh38_convert_cache.tar.gz}}
   wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list',
-    sbg:suggestedValue: {class: File, path: 60639017357c3a53540ca7d3, name: wgs_evaluation_regions.hg38.interval_list}}
+    "sbg:suggestedValue": {class: File, path: 60639017357c3a53540ca7d3, name: wgs_evaluation_regions.hg38.interval_list}}
   snp_max_gaussians: {type: 'int?', doc: "Interger value for max gaussians in SNP\
       \ VariantRecalibration. If a dataset gives fewer variants than the expected\
       \ scale, the number of Gaussians for training should be turned down. Lowering\
@@ -181,6 +181,9 @@ steps:
     label: 'Genotype, filter, & merge'
     doc: 'Use GATK GenomicsDBImport, VariantFiltration GenotypeGVCFs, and picard MakeSitesOnlyVcf
       to genotype, filter and merge gVCF based on known sites'
+    hints:
+    - class: sbg:AWSInstanceType
+      value: r5.4xlarge
     in:
       input_vcfs: input_vcfs
       interval: dynamicallycombineintervals/out_intervals
@@ -225,6 +228,9 @@ steps:
     label: 'GATK VariantRecalibrator Scatter'
     doc: 'Create recalibration model for known sites from input data using GATK VariantRecalibrator,
       tranch values, and known site VCFs'
+    hints:
+    - class: sbg:AWSInstanceType
+      value: r5.4xlarge
     in:
       sites_only_variant_filtered_vcf: gatk_import_genotype_filtergvcf_merge/sites_only_vcf
       model_report: gatk_snpsvariantrecalibratorcreatemodel/model_report
@@ -246,6 +252,9 @@ steps:
     run: ../tools/gatk_applyrecalibration.cwl
     label: 'GATK ApplyVQSR'
     doc: 'Apply recalibration to snps and indels'
+    hints:
+    - class: sbg:AWSInstanceType
+      value: r5.4xlarge
     in:
       indels_recalibration: gatk_indelsvariantrecalibrator/recalibration
       indels_tranches: gatk_indelsvariantrecalibrator/tranches
@@ -319,19 +328,17 @@ steps:
 $namespaces:
   sbg: https://sevenbridges.com
 hints:
-- class: 'sbg:AWSInstanceType'
-  value: r4.4xlarge;ebs-gp2;500
 - class: sbg:maxNumberOfParallelInstances
   value: 2
-sbg:license: Apache License 2.0
-sbg:publisher: KFDRC
-sbg:categories:
+"sbg:license": Apache License 2.0
+"sbg:publisher": KFDRC
+"sbg:categories":
 - GATK
 - GENOTYPING
 - JOINT
 - PEDDY
 - VCF
 - VEP
-sbg:links:
+"sbg:links":
 - id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.2.2'
   label: github-release
