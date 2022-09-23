@@ -1,0 +1,3 @@
+[submodule "kf-germline-workflow"]
+	path = kf-germline-workflow
+	url = https://github.com/kids-first/kf-germline-workflow
