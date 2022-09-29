@@ -1,5 +1,6 @@
 # Kids First DRC Joint Genotyping Workflow
 Kids First Data Resource Center Joint Genotyping Workflow (cram-to-deNovoGVCF). Cohort sample variant calling and genotype refinement.
+Note: The DNA annotation has been significantly upgraded since v2.2.3, if you'd like to use the old version, revert to that release.
 
 Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow: [Germline short variant discovery (SNPs + Indels)](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145), to create family joint calling and joint trios (typically mother-father-child) variant calls. Peddy is run to raise any potential issues in family relation definitions and sex assignment.
 
@@ -10,8 +11,8 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
 ![data service logo](https://github.com/d3b-center/d3b-research-workflows/raw/master/doc/kfdrc-logo-sm.png)
 
 ### Runtime Estimates
-- Single 5 GB gVCF Input: 90 Minutes & $2.25
-- Trio of 6 GB gVCFs Input: 240 Minutes & $3.25
+- Single 6 GB gVCF Input: 337 Minutes & $3.96
+- Trio of 6 GB gVCFs Input: 480 Minutes & $6.95
 
 ### Tips To Run:
 1. inputs vcf files are the gVCF files from GATK Haplotype Caller, need to have the index **.tbi** files copy to the same project too.
@@ -34,10 +35,19 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
     -  Homo_sapiens_assembly38.fasta
     -  1000G_phase3_v4_20130502.sites.hg38.vcf
     -  hg38.even.handcurated.20k.intervals
-    -  homo_sapiens_vep_93_GRCh38_convert_cache.tar.gz, from ftp://ftp.ensembl.org/pub/release-93/variation/indexed_vep_cache/ - variant effect predictor cache.
+    -  homo_sapiens_merged_vep_105_GRCh38.tar.gz, from ftp://ftp.ensembl.org/pub/release-105/variation/indexed_vep_cache/ - variant effect predictor cache.
     -  wgs_evaluation_regions.hg38.interval_list
+    - dbNSFP4.3a_grch38.gz
+      - dbNSFP4.3a_grch38.gz.tbi
+      - dbNSFP4.3a_grch38.readme.txt
+    - CADDv1.6-38-gnomad.genomes.r3.0.indel.tsv.gz
+    - CADDv1.6-38-whole_genome_SNVs.tsv.gz
+    - gnomad_3.1.1.vwb_subset.vcf.gz
+    - clinvar_20220507_chr.vcf.gz
+
+### Annotation sub workflow
+Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](https://github.com/kids-first/kf-germline-workflow/blob/master/docs/GERMLINE_SNV_ANNOT_README.md)
 
 ## Other Resources
 - dockerfiles: https://github.com/d3b-center/bixtools
 
-![pipeline flowchart](https://github.com/kids-first/kf-jointgenotyping-workflow/blob/master/docs/kfdrc-jointgenotyping-refinement-workflow.png?raw=true "Joint Genotyping Workflow")
