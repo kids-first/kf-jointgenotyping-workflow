@@ -105,7 +105,7 @@ inputs:
       \ the max-Gaussians forces the program to group variants into a smaller number\
       \ of clusters, which results in more variants per cluster."}
   output_basename: string
-  tool_name: string
+  tool_name: { type: 'string?', default: "postCGP.filtered.deNovo.vep", doc: "File name string suffx to use for output files" }
   # Annotation
   bcftools_annot_gnomad_columns: {type: 'string?', doc: "csv string of columns from\
       \ annotation to port into the input vcf, i.e", default: "INFO/gnomad_3_1_1_AC:=INFO/AC,INFO/gnomad_3_1_1_AN:=INFO/AN,INFO/gnomad_3_1_1_AF:=INFO/AF,INFO/gnomad_3_1_1_nhomalt:=INFO/nhomalt,INFO/gnomad_3_1_1_AC_popmax:=INFO/AC_popmax,INFO/gnomad_3_1_1_AN_popmax:=INFO/AN_popmax,INFO/gnomad_3_1_1_AF_popmax:=INFO/AF_popmax,INFO/gnomad_3_1_1_nhomalt_popmax:=INFO/nhomalt_popmax,INFO/gnomad_3_1_1_AC_controls_and_biobanks:=INFO/AC_controls_and_biobanks,INFO/gnomad_3_1_1_AN_controls_and_biobanks:=INFO/AN_controls_and_biobanks,INFO/gnomad_3_1_1_AF_controls_and_biobanks:=INFO/AF_controls_and_biobanks,INFO/gnomad_3_1_1_AF_non_cancer:=INFO/AF_non_cancer,INFO/gnomad_3_1_1_primate_ai_score:=INFO/primate_ai_score,INFO/gnomad_3_1_1_splice_ai_consequence:=INFO/splice_ai_consequence"}
@@ -116,18 +116,18 @@ inputs:
       name: gnomad_3.1.1.vwb_subset.vcf.gz, secondaryFiles: [{class: File, path: 6324ef5ad01163633daa00d7,
           name: gnomad_3.1.1.vwb_subset.vcf.gz.tbi}]}}
   clinvar_annotation_vcf: {type: 'File?', secondaryFiles: ['.tbi'], doc: "additional\
-      \ bgzipped annotation vcf file", "sbg:suggestedValue": {class: File, path: 632a2a572a5194517cfbed80,
-      name: clinvar_20220507.vcf.gz, secondaryFiles: [{class: File, path: 632a2a572a5194517cfbed81,
-          name: clinvar_20220507.vcf.gz.tbi}]}}
+      \ bgzipped annotation vcf file", "sbg:suggestedValue": {class: File, path: 632c6cbb2a5194517cff1593,
+      name: clinvar_20220507_chr.vcf.gz, secondaryFiles: [{class: File, path: 632c6cbb2a5194517cff1592,
+          name: clinvar_20220507_chr.vcf.gz.tbi}]}}
   # VEP-specific
-  vep_ram: {type: 'int?', default: 48, doc: "In GB, may need to increase this value\
+  vep_ram: {type: 'int?', default: 32, doc: "In GB, may need to increase this value\
       \ depending on the size/complexity of input"}
-  vep_cores: {type: 'int?', default: 32, doc: "Number of cores to use. May need to\
+  vep_cores: {type: 'int?', default: 16, doc: "Number of cores to use. May need to\
       \ increase for really large inputs"}
   vep_buffer_size: {type: 'int?', default: 100000, doc: "Increase or decrease to balance\
       \ speed and memory usage"}
   vep_cache: {type: 'File', doc: "tar gzipped cache from ensembl/local converted cache",
-    "sbg:suggestedValue": {class: File, path: 63248585dd7df46f4f14ef7c, name: homo_sapiens_merged_vep_105_GRCh38.tar.gz}}
+    "sbg:suggestedValue": {class: File, path: 6332f8e47535110eb79c794f, name: homo_sapiens_merged_vep_105_indexed_GRCh38.tar.gz}}
   dbnsfp: {type: 'File?', secondaryFiles: [.tbi, ^.readme.txt], doc: "VEP-formatted\
       \ plugin file, index, and readme file containing dbNSFP annotations", "sbg:suggestedValue": {
       class: File, path: 6298b53b4d85bc2e02ceb7a3, name: dbNSFP4.3a_grch38.gz, secondaryFiles: [
@@ -143,10 +143,12 @@ inputs:
   cadd_snvs: {type: 'File?', secondaryFiles: [.tbi], doc: "VEP-formatted plugin file\
       \ and index containing CADD SNV annotations", "sbg:suggestedValue": {class: File,
       path: 632a2b417535110eb78312a4, name: CADDv1.6-38-whole_genome_SNVs.tsv.gz,
-      secondaryFiles: [{class: File, path: 632a2b417535110eb78312a5, name: CADDv1.6-38-whole_genome_SNVs.tsv.gz.tbi}]}}
-  intervar: {type: 'File?', doc: "Intervar vcf-formatted file. See docs for custom\
-      \ build instructions", secondaryFiles: [.tbi]}
-
+      secondaryFiles: [{class: File, path: 632a2b417535110eb78312a3, name: CADDv1.6-38-whole_genome_SNVs.tsv.gz.tbi}]}}
+  intervar: {type: 'File?', doc: "Intervar vcf-formatted file. Exonic SNVs only -\
+      \ for more comprehensive run InterVar. See docs for custom build instructions",
+    secondaryFiles: [.tbi], "sbg:suggestedValue": {class: File, path: 633348619968f3738e4ec4b5,
+      name: Exons.all.hg38.intervar.2021-07-31.vcf.gz, secondaryFiles: [{class: File,
+          path: 633348619968f3738e4ec4b6, name: Exons.all.hg38.intervar.2021-07-31.vcf.gz.tbi}]}}
 
 outputs:
   collectvariantcallingmetrics: {type: 'File[]', doc: 'Variant calling summary and
