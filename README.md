@@ -10,6 +10,11 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
 
 ![data service logo](https://github.com/d3b-center/d3b-research-workflows/raw/master/doc/kfdrc-logo-sm.png)
 
+## Import info on cloning the git repo
+This repo takes advantage of the git submodule feature.
+The germline annotation workflow is maintained in a different repo.
+Therefore, in order to get the rest of the code after cloning, you need to run: `git submodule init` and `git submodule update`.
+
 ### Runtime Estimates
 - Single 6 GB gVCF Input: 337 Minutes & $3.96
 - Trio of 6 GB gVCFs Input: 480 Minutes & $6.95
