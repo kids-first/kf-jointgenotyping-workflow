@@ -10,14 +10,8 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
 
 ![data service logo](https://github.com/d3b-center/d3b-research-workflows/raw/master/doc/kfdrc-logo-sm.png)
 
-## Import info on cloning the git repo
-This repo takes advantage of the git submodule feature.
-The germline annotation workflow is maintained in a different repo.
-Therefore, in order to get the rest of the code after cloning, you need to run: `git submodule init` and `git submodule update`.
-
 ### Runtime Estimates
-- Single 6 GB gVCF Input: 337 Minutes & $3.96
-- Trio of 6 GB gVCFs Input: 480 Minutes & $6.95
+- Trio of 6 GB gVCFs Input: 540 Minutes & ~$6.95
 
 ### Tips To Run:
 1. inputs vcf files are the gVCF files from GATK Haplotype Caller, need to have the index **.tbi** files copy to the same project too.
@@ -50,9 +44,16 @@ Therefore, in order to get the rest of the code after cloning, you need to run: 
     - gnomad_3.1.1.vwb_subset.vcf.gz
     - clinvar_20220507_chr.vcf.gz
 
+
+## Import info on cloning the git repo
+This repo takes advantage of the git submodule feature.
+The germline annotation workflow is maintained in a different repo.
+Therefore, in order to get the rest of the code after cloning, you need to run: `git submodule init` and `git submodule update`.
+Currently this workflow uses tools from `v0.4.2` of the germline workflow.
+If that is updated, submodule should be as well.
+
 ### Annotation sub workflow
-Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](https://github.com/kids-first/kf-germline-workflow/blob/master/docs/GERMLINE_SNV_ANNOT_README.md)
+Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](https://github.com/kids-first/kf-germline-workflow/blob/v0.4.2/docs/GERMLINE_SNV_ANNOT_README.md)
 
 ## Other Resources
 - dockerfiles: https://github.com/d3b-center/bixtools
-
