@@ -51,6 +51,7 @@ The germline annotation workflow is maintained in a different repo.
 Therefore, in order to get the rest of the code after cloning, you need to run: `git submodule init` and `git submodule update`.
 Currently this workflow uses tools from `v0.4.2` of the germline workflow.
 If that is updated, submodule should be as well.
+More info on how this worked [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
 
 ### Annotation sub workflow
 Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](https://github.com/kids-first/kf-germline-workflow/blob/v0.4.2/docs/GERMLINE_SNV_ANNOT_README.md)
