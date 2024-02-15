@@ -1,4 +1,4 @@
-cwlVersion: v1.0
+cwlVersion: v1.2
 class: Workflow
 id: kfdrc-jointgenotyping-refinement-workflow
 label: Kids First DRC Joint Genotyping Workflow
@@ -25,7 +25,7 @@ doc: |
   1. Here we recommend to use GRCh38 as reference genome to do the analysis, positions in gVCF should be GRCh38 too.
   1. Reference locations:
       - https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0/
-      - kfdrc bucket: s3://kids-first-seq-data/broad-references/
+      - kfdrc bucket: s3://kids-first-seq-data/broad-references/, s3://kids-first-seq-data/pipeline-references/
       - cavatica: https://cavatica.sbgenomics.com/u/kfdrc-harmonization/kf-references/
   1. Suggested inputs:
       -  Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz
@@ -40,13 +40,14 @@ doc: |
       -  1000G_phase3_v4_20130502.sites.hg38.vcf
       -  hg38.even.handcurated.20k.intervals
       -  homo_sapiens_merged_vep_105_GRCh38.tar.gz, from ftp://ftp.ensembl.org/pub/release-105/variation/indexed_vep_cache/ - variant effect predictor cache.
+      - gnomad_v3.1.1.custom.echtvar.zip
       -  wgs_evaluation_regions.hg38.interval_list
+  1. Optional inputs:
       - dbNSFP4.3a_grch38.gz
         - dbNSFP4.3a_grch38.gz.tbi
         - dbNSFP4.3a_grch38.readme.txt
       - CADDv1.6-38-gnomad.genomes.r3.0.indel.tsv.gz
       - CADDv1.6-38-whole_genome_SNVs.tsv.gz
-      - gnomad_3.1.1.vwb_subset.vcf.gz
       - clinvar_20220507_chr.vcf.gz
 
 
@@ -54,11 +55,12 @@ doc: |
   This repo takes advantage of the git submodule feature.
   The germline annotation workflow is maintained in a different repo.
   Therefore, in order to get the rest of the code after cloning, you need to run: `git submodule init` and `git submodule update`.
-  Currently this workflow uses tools from `v0.4.2` of the germline workflow.
+  Currently this workflow uses tools from `v1.1.0` of the annotation workflow.
   If that is updated, submodule should be as well.
+  More info on how this works [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
 
   ### Annotation sub workflow
-  Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](https://github.com/kids-first/kf-germline-workflow/blob/v0.4.2/docs/GERMLINE_SNV_ANNOT_README.md)
+  Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](kf-annotation-tools/docs/GERMLINE_SNV_ANNOT_README.md)
 
   ## Other Resources
   - dockerfiles: https://github.com/d3b-center/bixtools
@@ -69,107 +71,76 @@ requirements:
 
 inputs:
   input_vcfs: {type: 'File[]', doc: 'Input array of individual sample gVCF files'}
-  axiomPoly_resource_vcf: {type: File, doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz',
-    "sbg:suggestedValue": {class: File, path: 60639016357c3a53540ca7c7, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz}}
-  axiomPoly_resource_tbi: {type: 'File?', doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi',
-    "sbg:suggestedValue": {class: File, path: 6063901d357c3a53540ca81b, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi}}
-  dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf', "sbg:suggestedValue": {
-      class: File, path: 6063901f357c3a53540ca84b, name: Homo_sapiens_assembly38.dbsnp138.vcf}}
-  dbsnp_idx: {type: 'File?', doc: 'Homo_sapiens_assembly38.dbsnp138.vcf.idx', "sbg:suggestedValue": {
-      class: File, path: 6063901e357c3a53540ca834, name: Homo_sapiens_assembly38.dbsnp138.vcf.idx}}
-  hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf', "sbg:suggestedValue": {
-      class: File, path: 60639016357c3a53540ca7be, name: hapmap_3.3.hg38.vcf.gz}}
-  hapmap_resource_tbi: {type: 'File?', doc: 'Hapmap genotype SNP input tbi', "sbg:suggestedValue": {
-      class: File, path: 60639016357c3a53540ca7c5, name: hapmap_3.3.hg38.vcf.gz.tbi}}
-  mills_resource_vcf: {type: File, doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz',
-    "sbg:suggestedValue": {class: File, path: 6063901a357c3a53540ca7f3, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz}}
-  mills_resource_tbi: {type: 'File?', doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi',
-    "sbg:suggestedValue": {class: File, path: 6063901c357c3a53540ca806, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi}}
-  omni_resource_vcf: {type: File, doc: '1000G_omni2.5.hg38.vcf.gz', "sbg:suggestedValue": {
-      class: File, path: 6063901e357c3a53540ca835, name: 1000G_omni2.5.hg38.vcf.gz}}
-  omni_resource_tbi: {type: 'File?', doc: '1000G_omni2.5.hg38.vcf.gz.tbi', "sbg:suggestedValue": {
-      class: File, path: 60639016357c3a53540ca7b1, name: 1000G_omni2.5.hg38.vcf.gz.tbi}}
-  one_thousand_genomes_resource_vcf: {type: File, doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz,
-      high confidence snps', "sbg:suggestedValue": {class: File, path: 6063901c357c3a53540ca80f,
-      name: 1000G_phase1.snps.high_confidence.hg38.vcf.gz}}
-  one_thousand_genomes_resource_tbi: {type: 'File?', doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi,
-      high confidence snps', "sbg:suggestedValue": {class: File, path: 6063901e357c3a53540ca845,
-      name: 1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi}}
+  axiomPoly_resource_vcf: {type: File, doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz', "sbg:suggestedValue": {
+      class: File, path: 60639016357c3a53540ca7c7, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz}}
+  axiomPoly_resource_tbi: {type: 'File?', doc: 'Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi', "sbg:suggestedValue": {
+      class: File, path: 6063901d357c3a53540ca81b, name: Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz.tbi}}
+  dbsnp_vcf: {type: File, doc: 'Homo_sapiens_assembly38.dbsnp138.vcf', "sbg:suggestedValue": {class: File, path: 6063901f357c3a53540ca84b,
+      name: Homo_sapiens_assembly38.dbsnp138.vcf}}
+  dbsnp_idx: {type: 'File?', doc: 'Homo_sapiens_assembly38.dbsnp138.vcf.idx', "sbg:suggestedValue": {class: File, path: 6063901e357c3a53540ca834,
+      name: Homo_sapiens_assembly38.dbsnp138.vcf.idx}}
+  hapmap_resource_vcf: {type: File, doc: 'Hapmap genotype SNP input vcf', "sbg:suggestedValue": {class: File, path: 60639016357c3a53540ca7be,
+      name: hapmap_3.3.hg38.vcf.gz}}
+  hapmap_resource_tbi: {type: 'File?', doc: 'Hapmap genotype SNP input tbi', "sbg:suggestedValue": {class: File, path: 60639016357c3a53540ca7c5,
+      name: hapmap_3.3.hg38.vcf.gz.tbi}}
+  mills_resource_vcf: {type: File, doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz', "sbg:suggestedValue": {class: File, path: 6063901a357c3a53540ca7f3,
+      name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz}}
+  mills_resource_tbi: {type: 'File?', doc: 'Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi', "sbg:suggestedValue": {class: File,
+      path: 6063901c357c3a53540ca806, name: Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi}}
+  omni_resource_vcf: {type: File, doc: '1000G_omni2.5.hg38.vcf.gz', "sbg:suggestedValue": {class: File, path: 6063901e357c3a53540ca835,
+      name: 1000G_omni2.5.hg38.vcf.gz}}
+  omni_resource_tbi: {type: 'File?', doc: '1000G_omni2.5.hg38.vcf.gz.tbi', "sbg:suggestedValue": {class: File, path: 60639016357c3a53540ca7b1,
+      name: 1000G_omni2.5.hg38.vcf.gz.tbi}}
+  one_thousand_genomes_resource_vcf: {type: File, doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz, high confidence snps', "sbg:suggestedValue": {
+      class: File, path: 6063901c357c3a53540ca80f, name: 1000G_phase1.snps.high_confidence.hg38.vcf.gz}}
+  one_thousand_genomes_resource_tbi: {type: 'File?', doc: '1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi, high confidence snps',
+    "sbg:suggestedValue": {class: File, path: 6063901e357c3a53540ca845, name: 1000G_phase1.snps.high_confidence.hg38.vcf.gz.tbi}}
   ped: {type: File, doc: 'Ped file for the family relationship'}
-  reference_dict: {type: 'File?', doc: 'Homo_sapiens_assembly38.dict', "sbg:suggestedValue": {
-      class: File, path: 60639019357c3a53540ca7e7, name: Homo_sapiens_assembly38.dict}}
-  reference_fai: {type: 'File?', doc: 'Homo_sapiens_assembly38.fasta.fai', "sbg:suggestedValue": {
-      class: File, path: 60639016357c3a53540ca7af, name: Homo_sapiens_assembly38.fasta.fai}}
-  reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta', "sbg:suggestedValue": {
-      class: File, path: 60639014357c3a53540ca7a3, name: Homo_sapiens_assembly38.fasta}}
-  snp_sites_vcf: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf', "sbg:suggestedValue": {
-      class: File, path: 60639016357c3a53540ca7b5, name: 1000G_phase3_v4_20130502.sites.hg38.vcf}}
-  snp_sites_idx: {type: 'File?', doc: '1000G_phase3_v4_20130502.sites.hg38.vcf.idx',
-    "sbg:suggestedValue": {class: File, path: 6063901d357c3a53540ca819, name: 1000G_phase3_v4_20130502.sites.hg38.vcf.idx}}
-  unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals',
-    "sbg:suggestedValue": {class: File, path: 5f500135e4b0370371c051b1, name: hg38.even.handcurated.20k.intervals}}
-  wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list',
-    "sbg:suggestedValue": {class: File, path: 60639017357c3a53540ca7d3, name: wgs_evaluation_regions.hg38.interval_list}}
-  snp_max_gaussians: {type: 'int?', doc: "Interger value for max gaussians in SNP\
-      \ VariantRecalibration. If a dataset gives fewer variants than the expected\
-      \ scale, the number of Gaussians for training should be turned down. Lowering\
-      \ the max-Gaussians forces the program to group variants into a smaller number\
-      \ of clusters, which results in more variants per cluster."}
-  indel_max_gaussians: {type: 'int?', doc: "Interger value for max gaussians in INDEL\
-      \ VariantRecalibration. If a dataset gives fewer variants than the expected\
-      \ scale, the number of Gaussians for training should be turned down. Lowering\
-      \ the max-Gaussians forces the program to group variants into a smaller number\
-      \ of clusters, which results in more variants per cluster."}
+  reference_dict: {type: 'File?', doc: 'Homo_sapiens_assembly38.dict', "sbg:suggestedValue": {class: File, path: 60639019357c3a53540ca7e7,
+      name: Homo_sapiens_assembly38.dict}}
+  reference_fai: {type: 'File?', doc: 'Homo_sapiens_assembly38.fasta.fai', "sbg:suggestedValue": {class: File, path: 60639016357c3a53540ca7af,
+      name: Homo_sapiens_assembly38.fasta.fai}}
+  reference_fasta: {type: File, doc: 'Homo_sapiens_assembly38.fasta', "sbg:suggestedValue": {class: File, path: 60639014357c3a53540ca7a3,
+      name: Homo_sapiens_assembly38.fasta}}
+  snp_sites_vcf: {type: File, doc: '1000G_phase3_v4_20130502.sites.hg38.vcf', "sbg:suggestedValue": {class: File, path: 60639016357c3a53540ca7b5,
+      name: 1000G_phase3_v4_20130502.sites.hg38.vcf}}
+  snp_sites_idx: {type: 'File?', doc: '1000G_phase3_v4_20130502.sites.hg38.vcf.idx', "sbg:suggestedValue": {class: File, path: 6063901d357c3a53540ca819,
+      name: 1000G_phase3_v4_20130502.sites.hg38.vcf.idx}}
+  unpadded_intervals_file: {type: File, doc: 'hg38.even.handcurated.20k.intervals', "sbg:suggestedValue": {class: File, path: 5f500135e4b0370371c051b1,
+      name: hg38.even.handcurated.20k.intervals}}
+  wgs_evaluation_interval_list: {type: File, doc: 'wgs_evaluation_regions.hg38.interval_list', "sbg:suggestedValue": {class: File,
+      path: 60639017357c3a53540ca7d3, name: wgs_evaluation_regions.hg38.interval_list}}
+  snp_max_gaussians: {type: 'int?', doc: "Interger value for max gaussians in SNP VariantRecalibration. If a dataset gives fewer variants
+      than the expected scale, the number of Gaussians for training should be turned down. Lowering the max-Gaussians forces the program
+      to group variants into a smaller number of clusters, which results in more variants per cluster."}
+  indel_max_gaussians: {type: 'int?', doc: "Interger value for max gaussians in INDEL VariantRecalibration. If a dataset gives fewer
+      variants than the expected scale, the number of Gaussians for training should be turned down. Lowering the max-Gaussians forces
+      the program to group variants into a smaller number of clusters, which results in more variants per cluster."}
   output_basename: string
-  tool_name: {type: 'string?', default: "multi.vqsr.filtered.denovo.vep_105", doc: "File\
-      \ name string suffix to use for output files"}
+  tool_name: {type: 'string?', default: "multi.vqsr.filtered.denovo.vep_105", doc: "File name string suffix to use for output files"}
   # Annotation
-  bcftools_annot_gnomad_columns: {type: 'string?', doc: "csv string of columns from\
-      \ annotation to port into the input vcf, i.e", default: "INFO/gnomad_3_1_1_AC:=INFO/AC,INFO/gnomad_3_1_1_AN:=INFO/AN,INFO/gnomad_3_1_1_AF:=INFO/AF,INFO/gnomad_3_1_1_nhomalt:=INFO/nhomalt,INFO/gnomad_3_1_1_AC_popmax:=INFO/AC_popmax,INFO/gnomad_3_1_1_AN_popmax:=INFO/AN_popmax,INFO/gnomad_3_1_1_AF_popmax:=INFO/AF_popmax,INFO/gnomad_3_1_1_nhomalt_popmax:=INFO/nhomalt_popmax,INFO/gnomad_3_1_1_AC_controls_and_biobanks:=INFO/AC_controls_and_biobanks,INFO/gnomad_3_1_1_AN_controls_and_biobanks:=INFO/AN_controls_and_biobanks,INFO/gnomad_3_1_1_AF_controls_and_biobanks:=INFO/AF_controls_and_biobanks,INFO/gnomad_3_1_1_AF_non_cancer:=INFO/AF_non_cancer,INFO/gnomad_3_1_1_primate_ai_score:=INFO/primate_ai_score,INFO/gnomad_3_1_1_splice_ai_consequence:=INFO/splice_ai_consequence"}
-  bcftools_annot_clinvar_columns: {type: 'string?', doc: "csv string of columns from\
-      \ annotation to port into the input vcf", default: "INFO/ALLELEID,INFO/CLNDN,INFO/CLNDNINCL,INFO/CLNDISDB,INFO/CLNDISDBINCL,INFO/CLNHGVS,INFO/CLNREVSTAT,INFO/CLNSIG,INFO/CLNSIGCONF,INFO/CLNSIGINCL,INFO/CLNVC,INFO/CLNVCSO,INFO/CLNVI"}
-  gnomad_annotation_vcf: {type: 'File?', secondaryFiles: ['.tbi'], doc: "additional\
-      \ bgzipped annotation vcf file", "sbg:suggestedValue": {class: File, path: 6324ef5ad01163633daa00d8,
-      name: gnomad_3.1.1.vwb_subset.vcf.gz, secondaryFiles: [{class: File, path: 6324ef5ad01163633daa00d7,
-          name: gnomad_3.1.1.vwb_subset.vcf.gz.tbi}]}}
-  clinvar_annotation_vcf: {type: 'File?', secondaryFiles: ['.tbi'], doc: "additional\
-      \ bgzipped annotation vcf file", "sbg:suggestedValue": {class: File, path: 632c6cbb2a5194517cff1593,
-      name: clinvar_20220507_chr.vcf.gz, secondaryFiles: [{class: File, path: 632c6cbb2a5194517cff1592,
-          name: clinvar_20220507_chr.vcf.gz.tbi}]}}
+  bcftools_annot_gnomad_columns: {type: 'string?', doc: "csv string of columns from annotation to port into the input vcf, i.e", default: "INFO/gnomad_3_1_1_AC:=INFO/AC,INFO/gnomad_3_1_1_AN:=INFO/AN,INFO/gnomad_3_1_1_AF:=INFO/AF,INFO/gnomad_3_1_1_nhomalt:=INFO/nhomalt,INFO/gnomad_3_1_1_AC_popmax:=INFO/AC_popmax,INFO/gnomad_3_1_1_AN_popmax:=INFO/AN_popmax,INFO/gnomad_3_1_1_AF_popmax:=INFO/AF_popmax,INFO/gnomad_3_1_1_nhomalt_popmax:=INFO/nhomalt_popmax,INFO/gnomad_3_1_1_AC_controls_and_biobanks:=INFO/AC_controls_and_biobanks,INFO/gnomad_3_1_1_AN_controls_and_biobanks:=INFO/AN_controls_and_biobanks,INFO/gnomad_3_1_1_AF_controls_and_biobanks:=INFO/AF_controls_and_biobanks,INFO/gnomad_3_1_1_AF_non_cancer:=INFO/AF_non_cancer,INFO/gnomad_3_1_1_primate_ai_score:=INFO/primate_ai_score,INFO/gnomad_3_1_1_splice_ai_consequence:=INFO/splice_ai_consequence"}
+  bcftools_annot_clinvar_columns: {type: 'string?', doc: "csv string of columns from annotation to port into the input vcf", default: "INFO/ALLELEID,INFO/CLNDN,INFO/CLNDNINCL,INFO/CLNDISDB,INFO/CLNDISDBINCL,INFO/CLNHGVS,INFO/CLNREVSTAT,INFO/CLNSIG,INFO/CLNSIGCONF,INFO/CLNSIGINCL,INFO/CLNVC,INFO/CLNVCSO,INFO/CLNVI"}
+  echtvar_anno_zips: {type: 'File[]?', doc: "Annotation ZIP files for echtvar anno", "sbg:suggestedValue": [{class: File, path: 65c64d847dab7758206248c6,
+        name: gnomad.v3.1.1.custom.echtvar.zip}]}
+  clinvar_annotation_vcf: {type: 'File?', secondaryFiles: ['.tbi'], doc: "additional bgzipped annotation vcf file"}
   # VEP-specific
-  vep_ram: {type: 'int?', default: 32, doc: "In GB, may need to increase this value\
-      \ depending on the size/complexity of input"}
-  vep_cores: {type: 'int?', default: 16, doc: "Number of cores to use. May need to\
-      \ increase for really large inputs"}
-  vep_buffer_size: {type: 'int?', default: 100000, doc: "Increase or decrease to balance\
-      \ speed and memory usage"}
-  vep_cache: {type: 'File', doc: "tar gzipped cache from ensembl/local converted cache",
-    "sbg:suggestedValue": {class: File, path: 6332f8e47535110eb79c794f, name: homo_sapiens_merged_vep_105_indexed_GRCh38.tar.gz}}
-  dbnsfp: {type: 'File?', secondaryFiles: [.tbi, ^.readme.txt], doc: "VEP-formatted\
-      \ plugin file, index, and readme file containing dbNSFP annotations", "sbg:suggestedValue": {
-      class: File, path: 63d97e944073196d123db264, name: dbNSFP4.3a_grch38.gz, secondaryFiles: [
-        {class: File, path: 63d97e944073196d123db262, name: dbNSFP4.3a_grch38.gz.tbi},
-        {class: File, path: 63d97e944073196d123db263, name: dbNSFP4.3a_grch38.readme.txt}]}}
-  dbnsfp_fields: {type: 'string?', doc: "csv string with desired fields to annotate.\
-      \ Use ALL to grab all", default: 'SIFT4G_pred,Polyphen2_HDIV_pred,Polyphen2_HVAR_pred,LRT_pred,MutationTaster_pred,MutationAssessor_pred,FATHMM_pred,PROVEAN_pred,VEST4_score,VEST4_rankscore,MetaSVM_pred,MetaLR_pred,MetaRNN_pred,M-CAP_pred,REVEL_score,REVEL_rankscore,PrimateAI_pred,DEOGEN2_pred,BayesDel_noAF_pred,ClinPred_pred,LIST-S2_pred,Aloft_pred,fathmm-MKL_coding_pred,fathmm-XF_coding_pred,Eigen-phred_coding,Eigen-PC-phred_coding,phyloP100way_vertebrate,phyloP100way_vertebrate_rankscore,phastCons100way_vertebrate,phastCons100way_vertebrate_rankscore,TWINSUK_AC,TWINSUK_AF,ALSPAC_AC,ALSPAC_AF,UK10K_AC,UK10K_AF,gnomAD_exomes_controls_AC,gnomAD_exomes_controls_AN,gnomAD_exomes_controls_AF,gnomAD_exomes_controls_nhomalt,gnomAD_exomes_controls_POPMAX_AC,gnomAD_exomes_controls_POPMAX_AN,gnomAD_exomes_controls_POPMAX_AF,gnomAD_exomes_controls_POPMAX_nhomalt,Interpro_domain,GTEx_V8_gene,GTEx_V8_tissue'}
+  vep_ram: {type: 'int?', default: 32, doc: "In GB, may need to increase this value depending on the size/complexity of input"}
+  vep_cores: {type: 'int?', default: 16, doc: "Number of cores to use. May need to increase for really large inputs"}
+  vep_buffer_size: {type: 'int?', default: 100000, doc: "Increase or decrease to balance speed and memory usage"}
+  vep_cache: {type: 'File', doc: "tar gzipped cache from ensembl/local converted cache", "sbg:suggestedValue": {class: File, path: 6332f8e47535110eb79c794f,
+      name: homo_sapiens_merged_vep_105_indexed_GRCh38.tar.gz}}
+  dbnsfp: {type: 'File?', secondaryFiles: [.tbi, ^.readme.txt], doc: "VEP-formatted plugin file, index, and readme file containing
+      dbNSFP annotations"}
+  dbnsfp_fields: {type: 'string?', doc: "csv string with desired fields to annotate. Use ALL to grab all", default: 'SIFT4G_pred,Polyphen2_HDIV_pred,Polyphen2_HVAR_pred,LRT_pred,MutationTaster_pred,MutationAssessor_pred,FATHMM_pred,PROVEAN_pred,VEST4_score,VEST4_rankscore,MetaSVM_pred,MetaLR_pred,MetaRNN_pred,M-CAP_pred,REVEL_score,REVEL_rankscore,PrimateAI_pred,DEOGEN2_pred,BayesDel_noAF_pred,ClinPred_pred,LIST-S2_pred,Aloft_pred,fathmm-MKL_coding_pred,fathmm-XF_coding_pred,Eigen-phred_coding,Eigen-PC-phred_coding,phyloP100way_vertebrate,phyloP100way_vertebrate_rankscore,phastCons100way_vertebrate,phastCons100way_vertebrate_rankscore,TWINSUK_AC,TWINSUK_AF,ALSPAC_AC,ALSPAC_AF,UK10K_AC,UK10K_AF,gnomAD_exomes_controls_AC,gnomAD_exomes_controls_AN,gnomAD_exomes_controls_AF,gnomAD_exomes_controls_nhomalt,gnomAD_exomes_controls_POPMAX_AC,gnomAD_exomes_controls_POPMAX_AN,gnomAD_exomes_controls_POPMAX_AF,gnomAD_exomes_controls_POPMAX_nhomalt,Interpro_domain,GTEx_V8_gene,GTEx_V8_tissue'}
   merged: {type: 'boolean?', doc: "Set to true if merged cache used", default: true}
-  cadd_indels: {type: 'File?', secondaryFiles: [.tbi], doc: "VEP-formatted plugin\
-      \ file and index containing CADD indel annotations", "sbg:suggestedValue": {
-      class: File, path: 632a2b417535110eb78312a6, name: CADDv1.6-38-gnomad.genomes.r3.0.indel.tsv.gz,
-      secondaryFiles: [{class: File, path: 632a2b417535110eb78312a5, name: CADDv1.6-38-gnomad.genomes.r3.0.indel.tsv.gz.tbi}]}}
-  cadd_snvs: {type: 'File?', secondaryFiles: [.tbi], doc: "VEP-formatted plugin file\
-      \ and index containing CADD SNV annotations", "sbg:suggestedValue": {class: File,
-      path: 632a2b417535110eb78312a4, name: CADDv1.6-38-whole_genome_SNVs.tsv.gz,
-      secondaryFiles: [{class: File, path: 632a2b417535110eb78312a3, name: CADDv1.6-38-whole_genome_SNVs.tsv.gz.tbi}]}}
-  intervar: {type: 'File?', doc: "Intervar vcf-formatted file. Exonic SNVs only -\
-      \ for more comprehensive run InterVar. See docs for custom build instructions",
-    secondaryFiles: [.tbi], "sbg:suggestedValue": {class: File, path: 633348619968f3738e4ec4b5,
-      name: Exons.all.hg38.intervar.2021-07-31.vcf.gz, secondaryFiles: [{class: File,
-          path: 633348619968f3738e4ec4b6, name: Exons.all.hg38.intervar.2021-07-31.vcf.gz.tbi}]}}
+  cadd_indels: {type: 'File?', secondaryFiles: [.tbi], doc: "VEP-formatted plugin file and index containing CADD indel annotations"}
+  cadd_snvs: {type: 'File?', secondaryFiles: [.tbi], doc: "VEP-formatted plugin file and index containing CADD SNV annotations"}
+  intervar: {type: 'File?', doc: "Intervar vcf-formatted file. Exonic SNVs only - for more comprehensive run InterVar. See docs for
+      custom build instructions", secondaryFiles: [.tbi]}
 
 outputs:
-  collectvariantcallingmetrics: {type: 'File[]', doc: 'Variant calling summary and
-      detailed metrics files', outputSource: picard_collectvariantcallingmetrics/output}
+  collectvariantcallingmetrics: {type: 'File[]', doc: 'Variant calling summary and detailed metrics files', outputSource: picard_collectvariantcallingmetrics/output}
   peddy_html: {type: 'File[]', doc: 'html summary of peddy results', outputSource: peddy/output_html}
   peddy_csv: {type: 'File[]', doc: 'csv details of peddy results', outputSource: peddy/output_csv}
   peddy_ped: {type: 'File[]', doc: 'ped format summary of peddy results', outputSource: peddy/output_peddy}
@@ -236,8 +207,8 @@ steps:
   gatk_import_genotype_filtergvcf_merge:
     run: ../tools/gatk_import_genotype_filtergvcf_merge.cwl
     label: 'Genotype, filter, & merge'
-    doc: 'Use GATK GenomicsDBImport, VariantFiltration GenotypeGVCFs, and picard MakeSitesOnlyVcf
-      to genotype, filter and merge gVCF based on known sites'
+    doc: 'Use GATK GenomicsDBImport, VariantFiltration GenotypeGVCFs, and picard MakeSitesOnlyVcf to genotype, filter and merge gVCF
+      based on known sites'
     hints:
     - class: sbg:AWSInstanceType
       value: r5.4xlarge
@@ -258,8 +229,7 @@ steps:
   gatk_snpsvariantrecalibratorcreatemodel:
     run: ../tools/gatk_snpsvariantrecalibratorcreatemodel.cwl
     label: 'GATK VariantRecalibrator SNPs'
-    doc: 'Create recalibration model for snps using GATK VariantRecalibrator, tranch
-      values, and known site VCFs'
+    doc: 'Create recalibration model for snps using GATK VariantRecalibrator, tranch values, and known site VCFs'
     in:
       dbsnp_resource_vcf: index_dbsnp/output
       hapmap_resource_vcf: index_hapmap/output
@@ -271,8 +241,7 @@ steps:
   gatk_indelsvariantrecalibrator:
     run: ../tools/gatk_indelsvariantrecalibrator.cwl
     label: 'GATK VariantRecalibrator Indels'
-    doc: 'Create recalibration model for indels using GATK VariantRecalibrator, tranch
-      values, and known site VCFs'
+    doc: 'Create recalibration model for indels using GATK VariantRecalibrator, tranch values, and known site VCFs'
     in:
       axiomPoly_resource_vcf: index_axiomPoly/output
       dbsnp_resource_vcf: index_dbsnp/output
@@ -283,8 +252,8 @@ steps:
   gatk_snpsvariantrecalibratorscattered:
     run: ../tools/gatk_snpsvariantrecalibratorscattered.cwl
     label: 'GATK VariantRecalibrator Scatter'
-    doc: 'Create recalibration model for known sites from input data using GATK VariantRecalibrator,
-      tranch values, and known site VCFs'
+    doc: 'Create recalibration model for known sites from input data using GATK VariantRecalibrator, tranch values, and known site
+      VCFs'
     hints:
     - class: sbg:AWSInstanceType
       value: r5.4xlarge
@@ -374,7 +343,7 @@ steps:
     out: [output]
     run: ../tools/gatk_variantannotator.cwl
   annotate_vcf:
-    run: ../kf-germline-workflow/workflows/kfdrc-germline-snv-annot-workflow.cwl
+    run: ../kf-annotation-tools/workflows/kfdrc-germline-snv-annot-workflow.cwl
     in:
       indexed_reference_fasta: prepare_reference/indexed_fasta
       input_vcf: gatk_variantannotator/output
@@ -382,7 +351,7 @@ steps:
       tool_name: tool_name
       bcftools_annot_gnomad_columns: bcftools_annot_gnomad_columns
       bcftools_annot_clinvar_columns: bcftools_annot_clinvar_columns
-      gnomad_annotation_vcf: gnomad_annotation_vcf
+      echtvar_anno_zips: echtvar_anno_zips
       clinvar_annotation_vcf: clinvar_annotation_vcf
       vep_ram: vep_ram
       vep_cores: vep_cores
@@ -412,5 +381,5 @@ hints:
 - VCF
 - VEP
 "sbg:links":
-- id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.3.2'
+- id: 'https://github.com/kids-first/kf-jointgenotyping-workflow/releases/tag/v2.4.0'
   label: github-release

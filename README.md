@@ -20,7 +20,7 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
 1. Here we recommend to use GRCh38 as reference genome to do the analysis, positions in gVCF should be GRCh38 too.
 1. Reference locations:
     - https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0/
-    - kfdrc bucket: s3://kids-first-seq-data/broad-references/
+    - kfdrc bucket: s3://kids-first-seq-data/broad-references/, s3://kids-first-seq-data/pipeline-references/
     - cavatica: https://cavatica.sbgenomics.com/u/kfdrc-harmonization/kf-references/
 1. Suggested inputs:
     -  Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz
@@ -35,13 +35,14 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
     -  1000G_phase3_v4_20130502.sites.hg38.vcf
     -  hg38.even.handcurated.20k.intervals
     -  homo_sapiens_merged_vep_105_GRCh38.tar.gz, from ftp://ftp.ensembl.org/pub/release-105/variation/indexed_vep_cache/ - variant effect predictor cache.
+    - gnomad_v3.1.1.custom.echtvar.zip
     -  wgs_evaluation_regions.hg38.interval_list
+1. Optional inputs:
     - dbNSFP4.3a_grch38.gz
       - dbNSFP4.3a_grch38.gz.tbi
       - dbNSFP4.3a_grch38.readme.txt
     - CADDv1.6-38-gnomad.genomes.r3.0.indel.tsv.gz
     - CADDv1.6-38-whole_genome_SNVs.tsv.gz
-    - gnomad_3.1.1.vwb_subset.vcf.gz
     - clinvar_20220507_chr.vcf.gz
 
 
@@ -49,12 +50,12 @@ This workflow is the current production workflow, equivalent to this [Cavatica p
 This repo takes advantage of the git submodule feature.
 The germline annotation workflow is maintained in a different repo.
 Therefore, in order to get the rest of the code after cloning, you need to run: `git submodule init` and `git submodule update`.
-Currently this workflow uses tools from `v0.4.2` of the germline workflow.
+Currently this workflow uses tools from `v1.1.0` of the annotation workflow.
 If that is updated, submodule should be as well.
-More info on how this worked [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
+More info on how this works [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
 
 ### Annotation sub workflow
-Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](https://github.com/kids-first/kf-germline-workflow/blob/v0.4.2/docs/GERMLINE_SNV_ANNOT_README.md)
+Information of default annotation performed can be found in the [Kids First DRC Germline SNV Annotation Workflow docs](kf-annotation-tools/docs/GERMLINE_SNV_ANNOT_README.md)
 
 ## Other Resources
 - dockerfiles: https://github.com/d3b-center/bixtools
