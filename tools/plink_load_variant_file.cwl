@@ -33,15 +33,8 @@ inputs:
   vcf_min_gq: { type: 'float?', inputBinding: { position: 2, prefix: "--vcf-min-gq" }, doc: "excludes all genotype calls with GQ below the given (nonnegative, decimal values permitted) threshold" }
   vcf_half_call: { type: ['null', { type: enum, name: "vcf_half_call", symbols: ["error", "haploid", "missing", "reference"]}], inputBinding: { position: 2, prefix: "--vcf-half-call" }, doc: "specify how '0/.' and similar GT values should be interpreted. Error: PLINK 1.9 errors out and reports the line number of the anomaly. Haploid: Treat half-calls as haploid/homozygous. Missing: Treat half-calls as missing. Reference: Treat the missing part as reference." }
 
-  cpu:
-    type: 'int?'
-    default: 4
-    doc: "Number of CPUs to allocate to this task."
-  ram:
-    type: 'int?'
-    default: 8
-    doc: "GB size of RAM to allocate to this task."
-
+  cpu: { type: 'int?', default: 4, doc: "Number of CPUs to allocate to this task." }
+  ram: { type: 'int?', default: 8, doc: "GB size of RAM to allocate to this task." }
 outputs:
   bim:
     type: File
