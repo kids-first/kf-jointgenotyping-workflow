@@ -36,15 +36,8 @@ inputs:
   mendel: { type: ['null', { type: enum, name: "mendel", symbols: ["base", "summaries-only"]}], inputBinding: { position: 2, prefix: "--mendel", valueFrom: "$(self == 'base' ? '' : self)" }, doc: "scans the dataset for Mendel errors. If you only want summary statistics, use the 'summaries-only' modifier." }
   additional_args: { type: 'string[]?', inputBinding: { position: 2, shellQuote: false }, doc: "Any additonal args for plink. There are a lot..." }
 
-  cpu:
-    type: 'int?'
-    default: 4
-    doc: "Number of CPUs to allocate to this task."
-  ram:
-    type: 'int?'
-    default: 8
-    doc: "GB size of RAM to allocate to this task."
-
+  cpu: { type: 'int?', default: 4, doc: "Number of CPUs to allocate to this task." }
+  ram: { type: 'int?', default: 8, doc: "GB size of RAM to allocate to this task." }
 outputs:
   genome_out:
     type: File?
