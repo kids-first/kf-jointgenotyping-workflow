@@ -7,7 +7,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: 'pgc-images.sbgenomics.com/danmiller/plink:1.90-b7.2'
+    dockerPull: 'pgc-images.sbgenomics.com/d3b-bixu/plink:1.90b7.2'
   - class: ResourceRequirement
     ramMin: $(inputs.ram*1000)
     coresMin: $(inputs.cpu)
