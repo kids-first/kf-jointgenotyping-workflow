@@ -15,7 +15,7 @@ baseCommand: []
 arguments:
   - position: 0
     shellQuote: false
-    valueFrom: >
+    valueFrom: >-
       plink
   - position: 3
     shellQuote: false

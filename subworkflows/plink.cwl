@@ -81,7 +81,7 @@ steps:
       input_vcf:
         source: [bcftools_merge/output, bcftools_view/output, input_vcfs]
         valueFrom: |
-          $(self[0] != null ? self[0] : self[1][0] != null ? self[1][0] : self[2][0])
+          $(self[0] != null ? self[0] : self[1] != null && self[1][0] != null ? self[1][0] : self[2][0])
       output_basename: output_basename
       const_fid:
         valueFrom: "FAMID"
