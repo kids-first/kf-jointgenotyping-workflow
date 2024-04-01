@@ -46,6 +46,9 @@ steps:
     run: ../tools/bcftools_view.cwl
     when: $(inputs.targets_file_include != null)
     scatter: [input_vcf]
+    hints:
+    - class: sbg:AWSInstanceType
+      value: c5.4xlarge
     in:
       input_vcf: input_vcfs
       targets_file_include: genome_target_sites
