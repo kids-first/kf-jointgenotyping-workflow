@@ -2,7 +2,7 @@ cwlVersion: v1.2
 class: Workflow
 id: plink
 doc: |
-  Plink subworkflow. Loads a VCF then runs genome and sexchecks on it.
+  Plink subworkflow. Loads a VCF then runs genome identity-by-descent analysis on it.
 requirements:
 - class: ScatterFeatureRequirement
 - class: MultipleInputFeatureRequirement
@@ -32,7 +32,15 @@ inputs:
           - name: "nudge"
             type: boolean?
             doc: "adjusts the final estimates"
-    doc: "invokes an IBS/IBD computation"
+    doc: |
+      invokes an IBS/IBD computation.
+      To turn on, set to empty/not null.
+      Additional modifiers can be turned on using the boolean fields.
+      gz: output to be gzipped.
+      full: adds additional fields to output.
+      rel-check: removes pairs of samples with different FIDs.
+      unbounded: turns off clipping.
+      nudge: adjusts the final estimates.
 
   # Resource Requirements
   plink_cpu: {type: 'int?', doc: "CPUs to allocate to plink"}
@@ -72,7 +80,7 @@ steps:
       input_vcfs:
         source: [bcftools_view/output, input_vcfs]
         pickValue: first_non_null
-      output_filename: 
+      output_filename:
         valueFrom: "merged.vcf.gz"
       output_type:
         valueFrom: "z"
