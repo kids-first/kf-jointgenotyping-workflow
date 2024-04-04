@@ -25,7 +25,7 @@ arguments:
 
 inputs:
   # Required Inputs
-  input_vcfs: { type: 'File[]', secondaryFiles: [{pattern: ".tbi", required: true}], doc: "One or more VCF files to query." }
+  input_vcfs: { type: 'File[]', secondaryFiles: [{pattern: ".tbi", required: true}], doc: "Two or more VCF files to merge." }
   output_filename: { type: 'string', inputBinding: { position: 2, prefix: "--output"}, doc: "output file name" }
 
   # Merge Arguments
