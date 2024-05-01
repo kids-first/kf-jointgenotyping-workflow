@@ -24,6 +24,7 @@ arguments:
 inputs:
   input_vcf: { type: 'File?', inputBinding: { position: 2, prefix: "--vcf" }, doc: "Input VCF file. Can be bgzipped." }
   input_bcf: { type: 'File?', inputBinding: { position: 2, prefix: "--bcf" }, doc: "Input BCF file. Can be bgzipped." }
+  read_freq: { type: 'File?', inputBinding: { position: 2, prefix: "--read-freq" }, doc: "Input file containing read frequencies." }
   output_basename: { type: 'string?', default: "plink", inputBinding: { position: 2, prefix: "--out"}, doc: "Basename for plink binary files." }
   double_id: { type: 'boolean?', inputBinding: { position: 2, prefix: "--double-id" }, doc: "causes both family and within-family IDs to be set to the sample ID" }
   const_fid: { type: 'string?', inputBinding: { position: 2, prefix: "--const-fid" }, doc: "converts sample IDs to within-family IDs while setting all family IDs to a single value" }
