@@ -12,6 +12,7 @@ inputs:
   input_vcfs: { type: 'File[]' }
   genome_target_sites: { type: 'File?', doc: "Target sites for identity-by-descent genome analysis." }
   output_basename: {type: 'string', doc: "String value to use as basename for outputs"}
+  merge_force_samples: { type: 'boolean?', doc: "Force bcftools to resolve duplicate sample names" }
   genome:
     type:
       - 'null'
@@ -45,8 +46,12 @@ inputs:
   # Resource Requirements
   plink_cpu: {type: 'int?', doc: "CPUs to allocate to plink"}
   plink_ram: {type: 'int?', doc: "RAM in GB to allocate to plink"}
+  merge_cpu: {type: 'int?', default: 8, doc: "CPUs to allocate to bcftools merge"}
+  merge_ram: {type: 'int?', default: 16, doc: "RAM in GB to allocate to bcftools merge"}
 
 outputs:
+  merge_file_list: { type: 'File?', outputSource: bcftools_merge/merge_file_list}
+  cohort_vcf: {type: 'File?', outputSource: bcftools_merge/output }
   genome_out: {type: 'File?', outputSource: plink_process_binary/genome_out }
 
 steps:
@@ -56,12 +61,16 @@ steps:
     scatter: [input_vcf]
     hints:
     - class: sbg:AWSInstanceType
-      value: c5.4xlarge
+      value: c5.4xlarge;ebs-gp2;4096
     in:
       input_vcf: input_vcfs
       targets_file_include: genome_target_sites
       output_filename:
-        valueFrom: "temp.vcf.gz##idx##temp.vcf.gz.tbi"
+        valueFrom: |
+          ${
+            var outname = inputs.input_vcf.basename.replace(/.[bv]cf(.gz)?$/, ".targets.vcf.gz");
+            return outname + "##idx##" + outname + ".tbi";
+          }
       write_index:
         valueFrom: $(1 == 1)
       output_type:
@@ -74,17 +83,20 @@ steps:
 
   bcftools_merge:
     run: ../tools/bcftools_merge.cwl
-    when: $(inputs.run_tool.length > 1)
+    when: $(inputs.input_vcfs.length > 1)
     in:
-      run_tool: input_vcfs
       input_vcfs:
         source: [bcftools_view/output, input_vcfs]
         pickValue: first_non_null
       output_filename:
-        valueFrom: "merged.vcf.gz"
+        source: output_basename
+        valueFrom: $(self).merged.vcf.gz
       output_type:
         valueFrom: "z"
-    out: [output]
+      force_samples: merge_force_samples
+      cpu: merge_cpu
+      ram: merge_ram
+    out: [output, merge_file_list]
 
   plink_load_variant_file:
     run: ../tools/plink_load_variant_file.cwl
