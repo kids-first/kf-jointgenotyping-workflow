@@ -10,6 +10,7 @@ requirements:
 - class: StepInputExpressionRequirement
 inputs:
   input_vcfs: { type: 'File[]' }
+  input_ped: { type: 'File?', doc: "PED file for the input VCFs" }
   genome_target_sites: { type: 'File?', doc: "Target sites for identity-by-descent genome analysis." }
   output_basename: {type: 'string', doc: "String value to use as basename for outputs"}
   merge_force_samples: { type: 'boolean?', doc: "Force bcftools to resolve duplicate sample names" }
@@ -112,12 +113,25 @@ steps:
       ram: plink_ram
     out: [bim, bed, fam, log, skip_3allele]
 
+  plink_update_ids_with_ped:
+    run: ../tools/plink_update_ids_with_ped.cwl
+    when: $(inputs.input_ped != null)
+    in:
+      input_ped: input_ped
+      original_fam_id:
+        valueFrom: "FAMID"
+      input_fam: plink_load_variant_file/fam
+      output_baesname: output_basename
+    out: [fam, log] 
+
   plink_process_binary:
     run: ../tools/plink_process_binary.cwl
     in:
       input_bim: plink_load_variant_file/bim
       input_bed: plink_load_variant_file/bed
-      input_fam: plink_load_variant_file/fam
+      input_fam:
+        source: [plink_update_ids_with_ped/fam, plink_load_variant_file/fam]
+        pickValue: first_non_null
       output_basename: output_basename
       genome: genome
       cpu: plink_cpu
