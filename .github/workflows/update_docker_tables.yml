@@ -16,6 +16,7 @@ jobs:
         name: Checkout Repo
         with:
           ref: ${{ github.head_ref }}
+          submodules: true
       - id: make-jointgenotyping-table
         name: Make Docker Table for Joint Genotyping Workflow
         run: |
