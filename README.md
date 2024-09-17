@@ -54,7 +54,7 @@ Note: Not all outputs are available from the Kids First Portal. If there is an o
  - `collectvariantcallingmetrics`: Variant calling summary and detailed metrics files
  - `peddy_html`: html summary of peddy results
  - `peddy_ped`: ped format summary of peddy results
- - `cgp_vep_annotated_vcf`: Variant Effect Predictor annotated VCF files. File suffix tyically `.multi.vqsr.filtered.denovo.vep_105.vcf.gz` .Contains joint calls with the following:
+ - `cgp_vep_annotated_vcf`: Variant Effect Predictor annotated VCF files. File suffix tyically `.multi.vqsr.filtered.denovo.vep_105.vcf.gz`. Contains joint calls with the following:
    - `lowGQ` FILTER `GQ < 20.0`.
    - Genotype posterior probabilities. See [here](https://gatk.broadinstitute.org/hc/en-us/articles/360037226592-CalculateGenotypePosteriors) for an explanation
    - INFO tags of `hiConfDeNovo`, `loConfDeNovo`. See [here](https://gatk.broadinstitute.org/hc/en-us/articles/4409924802331-PossibleDeNovo) for more info
