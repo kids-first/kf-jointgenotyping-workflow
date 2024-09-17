@@ -7,6 +7,8 @@ doc: |
   Kids First Data Resource Center Joint Genotyping Workflow (cram-to-deNovoGVCF). **_Small_** Cohort sample variant calling and genotype refinement.
   This workflow is intended for family cohort calling, typically mother-father-proband trios.
   If you wish to run on a larger cohort, please see our [Kids First-Sentieon Joint Cohort Calling](https://github.com/kids-first/Kids-First-Sentieon-Joint-Cohort-Genotyping-Workflow) workflow.
+  Furthermore, in its current state, it follows best practices for WGS input only.
+  While WXS data could be run, parameters are not currently optimized for that, but a planned update will allow for appropriate defaults to be set for either input type.
   Note: The DNA annotation has been significantly upgraded since v2.2.3, if you'd like to use the old version, revert to that release.
 
   Using existing gVCFs, likely from GATK Haplotype Caller, we follow this workflow: [Germline short variant discovery (SNPs + Indels)](https://gatk.broadinstitute.org/hc/en-us/articles/360035535932-Germline-short-variant-discovery-SNPs-Indels), to create family joint calling and joint trios (typically mother-father-child) variant calls. Peddy is run to raise any potential issues in family relation definitions and sex assignment.
